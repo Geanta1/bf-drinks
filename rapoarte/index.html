@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Rapoarte ParmaShop – Noiembrie 2026</title>
+<title>Rapoarte ParmaShop – 06–30 noiembrie 2026</title>
 <style>
 :root{--bg:#f6f7f9;--card:#fff;--ink:#1d2330;--muted:#6b7385;--line:#e4e7ec;--acc:#8a1c2b;--acc2:#c9a227;--bar:#8a1c2b;--barbg:#f0e6e8}
 @media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--ink:#e8ebf1;--muted:#98a1b3;--line:#2b313d;--acc:#e0566b;--acc2:#e3c15a;--bar:#e0566b;--barbg:#2a2128}}
@@ -46,13 +46,13 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 <body>
 <div class="wrap">
 <header>
-  <h1>ParmaShop · Noiembrie 2026</h1>
+  <h1>ParmaShop · 06–30 noiembrie 2026</h1>
   <div class="upd">Actualizat: <b id="upd">–</b> · se reîmprospătează automat</div>
 </header>
 <div class="err" id="err"></div>
 
 <section class="kpis">
-  <div class="kpi"><div class="l">Vânzări 01–30 nov</div><div class="v" id="k1">–</div></div>
+  <div class="kpi"><div class="l">Vânzări 06–30 nov</div><div class="v" id="k1">–</div></div>
   <div class="kpi"><div class="l">Comenzi</div><div class="v" id="k2">–</div></div>
   <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="k3">–</div></div>
   <div class="kpi"><div class="l">Valoare medie / comandă</div><div class="v" id="k4">–</div></div>
@@ -69,7 +69,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 
 <section class="card">
   <div class="tools">
-    <h2 style="margin:0">Top produse cumpărate (01–30 nov)</h2>
+    <h2 style="margin:0">Top produse cumpărate (06–30 nov)</h2>
     <input type="search" id="q" placeholder="Caută produs sau model…">
   </div>
   <div class="upd" id="pinfo" style="margin-bottom:8px"></div>
@@ -90,7 +90,7 @@ function render(){
   k1.textContent=lei(tot);k2.textContent=int(ord);k3.textContent=int(it);k4.textContent=ord?lei(tot/ord):'–';
   upd.textContent=new Date(D.u).toLocaleString('ro-RO',{timeZone:'Europe/Bucharest',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   const max=Math.max(1,...s.map(r=>r[3]));let ch='',dl='',tb='';
-  for(let d=1;d<=30;d++){const r=byDay[d];const h=r?Math.max(1,r[3]/max*100):0;
+  for(let d=6;d<=30;d++){const r=byDay[d];const h=r?Math.max(1,r[3]/max*100):0;
     ch+=`<div class="col${r?'':' f'}"><div class="tip">${d} nov: ${r?lei(r[3])+' · '+r[1]+' com.':'fără date'}</div><div class="b" style="height:${r?h:2}%"></div></div>`;
     dl+=`<span>${d}</span>`;
     if(r)tb+=`<tr><td>${String(d).padStart(2,'0')}.11.2026</td><td class="n">${int(r[1])}</td><td class="n">${int(r[2])}</td><td class="n">${lei(r[3])}</td></tr>`;}
