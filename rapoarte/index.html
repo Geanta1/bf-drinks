@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Rapoarte ParmaShop – Noiembrie 2026</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2330;--muted:#6b7385;--line:#e4e7ec;--acc:#8a1c2b;--acc2:#c9a227;--bar:#8a1c2b;--barbg:#f0e6e8}
+@media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--ink:#e8ebf1;--muted:#98a1b3;--line:#2b313d;--acc:#e0566b;--acc2:#e3c15a;--bar:#e0566b;--barbg:#2a2128}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 40px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:16px}
+h1{font-size:22px;margin:0}h2{font-size:17px;margin:0 0 12px}
+.upd{color:var(--muted);font-size:13px}
+.upd b{color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpi,.card{background:var(--card);border:1px solid var(--line);border-radius:12px}
+.kpi{padding:14px 16px}
+.kpi .l{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.kpi .v{font-size:24px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums}
+.card{padding:16px;margin-bottom:16px}
+.chart{display:flex;align-items:flex-end;gap:3px;height:170px;border-bottom:1px solid var(--line);padding-top:18px}
+.col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;position:relative;min-width:0}
+.col .b{width:100%;background:var(--bar);border-radius:3px 3px 0 0;min-height:1px}
+.col.f .b{background:var(--barbg)}
+.col:hover .b{opacity:.8}
+.col .tip{display:none;position:absolute;bottom:100%;background:var(--ink);color:var(--bg);font-size:12px;padding:4px 7px;border-radius:6px;white-space:nowrap;z-index:2;pointer-events:none}
+.col:hover .tip{display:block}
+.days{display:flex;gap:3px;margin-top:4px}.days span{flex:1;text-align:center;font-size:10px;color:var(--muted);min-width:0}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;cursor:pointer;user-select:none;white-space:nowrap}
+th.n,td.n{text-align:right}
+tbody tr:hover{background:color-mix(in srgb,var(--acc) 6%,transparent)}
+td.m{color:var(--muted);font-size:13px;white-space:nowrap}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
+input[type=search]{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;width:260px;max-width:100%}
+.scroll{overflow-x:auto}
+.err{background:#fde8e8;color:#8a1c1c;padding:10px 14px;border-radius:8px;margin-bottom:16px;display:none}
+details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi .v{font-size:20px}.days span:nth-child(even){visibility:hidden}td.m{white-space:normal}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>ParmaShop · Noiembrie 2026</h1>
+  <div class="upd">Actualizat: <b id="upd">–</b> · se reîmprospătează automat</div>
+</header>
+<div class="err" id="err"></div>
+
+<section class="kpis">
+  <div class="kpi"><div class="l">Vânzări 01–30 nov</div><div class="v" id="k1">–</div></div>
+  <div class="kpi"><div class="l">Comenzi</div><div class="v" id="k2">–</div></div>
+  <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="k3">–</div></div>
+  <div class="kpi"><div class="l">Valoare medie / comandă</div><div class="v" id="k4">–</div></div>
+</section>
+
+<section class="card">
+  <h2>Raport vânzări pe zile</h2>
+  <div class="chart" id="chart"></div>
+  <div class="days" id="days"></div>
+  <details><summary>Tabel pe zile</summary>
+    <div class="scroll"><table><thead><tr><th>Data</th><th class="n">Comenzi</th><th class="n">Produse</th><th class="n">Total</th></tr></thead><tbody id="dayt"></tbody></table></div>
+  </details>
+</section>
+
+<section class="card">
+  <div class="tools">
+    <h2 style="margin:0">Top produse cumpărate (01–30 nov)</h2>
+    <input type="search" id="q" placeholder="Caută produs sau model…">
+  </div>
+  <div class="upd" id="pinfo" style="margin-bottom:8px"></div>
+  <div class="scroll"><table>
+    <thead><tr><th data-k="r" class="n">#</th><th data-k="0">Nume produs</th><th data-k="1">Model</th><th data-k="2" class="n">Cantitate</th><th data-k="3" class="n">Total</th></tr></thead>
+    <tbody id="pt"></tbody>
+  </table></div>
+</section>
+</div>
+<script>
+const lei=v=>v.toLocaleString('ro-RO',{minimumFractionDigits:2,maximumFractionDigits:2})+' lei';
+const int=v=>v.toLocaleString('ro-RO');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let D=null,sortK=3,sortDir=-1;
+function render(){
+  const s=D.s, byDay={}; s.forEach(r=>byDay[r[0]]=r);
+  const tot=s.reduce((a,r)=>a+r[3],0),ord=s.reduce((a,r)=>a+r[1],0),it=s.reduce((a,r)=>a+r[2],0);
+  k1.textContent=lei(tot);k2.textContent=int(ord);k3.textContent=int(it);k4.textContent=ord?lei(tot/ord):'–';
+  upd.textContent=new Date(D.u).toLocaleString('ro-RO',{timeZone:'Europe/Bucharest',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const max=Math.max(1,...s.map(r=>r[3]));let ch='',dl='',tb='';
+  for(let d=1;d<=30;d++){const r=byDay[d];const h=r?Math.max(1,r[3]/max*100):0;
+    ch+=`<div class="col${r?'':' f'}"><div class="tip">${d} nov: ${r?lei(r[3])+' · '+r[1]+' com.':'fără date'}</div><div class="b" style="height:${r?h:2}%"></div></div>`;
+    dl+=`<span>${d}</span>`;
+    if(r)tb+=`<tr><td>${String(d).padStart(2,'0')}.11.2026</td><td class="n">${int(r[1])}</td><td class="n">${int(r[2])}</td><td class="n">${lei(r[3])}</td></tr>`;}
+  chart.innerHTML=ch;days.innerHTML=dl;dayt.innerHTML=tb+`<tr><th>Total</th><th class="n">${int(ord)}</th><th class="n">${int(it)}</th><th class="n">${lei(tot)}</th></tr>`;
+  pinfo.textContent=`Primele ${D.p.length} produse după valoare, din ${D.n} produse cumpărate în perioadă.`;
+  renderP();
+}
+function renderP(){
+  const q=document.getElementById('q').value.trim().toLowerCase();
+  let rows=D.p.map((r,i)=>({r:i+1,d:r})).filter(o=>!q||(o.d[0]+' '+o.d[1]).toLowerCase().includes(q));
+  rows.sort((a,b)=>{const x=sortK==='r'?a.r:a.d[sortK],y=sortK==='r'?b.r:b.d[sortK];return (typeof x==='string'?x.localeCompare(y,'ro'):x-y)*sortDir;});
+  pt.innerHTML=rows.map(o=>`<tr><td class="n m">${o.r}</td><td>${esc(o.d[0])}</td><td class="m">${esc(o.d[1])}</td><td class="n">${int(o.d[2])}</td><td class="n">${lei(o.d[3])}</td></tr>`).join('')||'<tr><td colspan="5" class="m">Niciun produs găsit.</td></tr>';
+}
+document.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k==='r'?'r':+th.dataset.k;sortDir=(k===sortK)?-sortDir:(typeof k==='number'&&k<2?1:-1);sortK=k;renderP();});
+document.getElementById('q').oninput=renderP;
+async function load(){
+  try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status);D=await r.json();err.style.display='none';render();}
+  catch(e){err.textContent='Nu am putut încărca datele ('+e.message+').';err.style.display='block';}
+}
+load();setInterval(load,5*60*1000);
+</script>
+</body>
+</html>
