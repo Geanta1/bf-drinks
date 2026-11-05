@@ -80,7 +80,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 </section>
 </div>
 <script>
-const lei=v=>v.toLocaleString('ro-RO',{minimumFractionDigits:2,maximumFractionDigits:2})+' lei';
+const lei=v=>v.toLocaleString('ro-RO',{minimumFractionDigits:0,maximumFractionDigits:0})+' lei';
 const int=v=>v.toLocaleString('ro-RO');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let D=null,sortK=3,sortDir=-1;
