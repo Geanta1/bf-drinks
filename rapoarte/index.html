@@ -39,6 +39,7 @@ td.m{color:var(--muted);font-size:13px;white-space:nowrap}
 input[type=search]{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;width:260px;max-width:100%}
 .scroll{overflow-x:auto}
 .err{background:#fde8e8;color:#8a1c1c;padding:10px 14px;border-radius:8px;margin-bottom:16px;display:none}
+h3.sec{font-size:19px;margin:28px 0 12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}h3.sec small{font-size:13px;font-weight:400;color:var(--muted)}
 details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px}
 @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi .v{font-size:20px}.days span:nth-child(even){visibility:hidden}td.m{white-space:normal}}
 </style>
@@ -46,69 +47,101 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 <body>
 <div class="wrap">
 <header>
-  <h1>ParmaShop · 06–10 noiembrie 2026</h1>
+  <h1>Vânzări · 06–10 noiembrie 2026</h1>
   <div class="upd">Actualizat: <b id="upd">–</b> · se reîmprospătează automat</div>
 </header>
 <div class="err" id="err"></div>
-
+<div class="upd" id="nav" style="display:none;margin-bottom:4px">Sari la: <a href="#emag" style="color:var(--acc)">eMAG Marketplace ↓</a></div>
+<h3 class="sec">ParmaShop.ro <small id="psupd"></small></h3>
 <section class="kpis">
-  <div class="kpi"><div class="l">Vânzări 06–10 nov</div><div class="v" id="k1">–</div></div>
-  <div class="kpi"><div class="l">Comenzi</div><div class="v" id="k2">–</div></div>
-  <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="k3">–</div></div>
-  <div class="kpi"><div class="l">Valoare medie / comandă</div><div class="v" id="k4">–</div></div>
+  <div class="kpi"><div class="l">Vânzări 06–10 nov</div><div class="v" id="psk1">–</div></div>
+  <div class="kpi"><div class="l">Comenzi</div><div class="v" id="psk2">–</div></div>
+  <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="psk3">–</div></div>
+  <div class="kpi"><div class="l">Valoare medie / comandă</div><div class="v" id="psk4">–</div></div>
 </section>
-
 <section class="card">
-  <h2>Raport vânzări pe zile</h2>
-  <div class="chart" id="chart"></div>
-  <div class="days" id="days"></div>
+  <h2>Vânzări pe zile</h2>
+  <div class="chart" id="pschart"></div>
+  <div class="days" id="psdays"></div>
   <details><summary>Tabel pe zile</summary>
-    <div class="scroll"><table><thead><tr><th>Data</th><th class="n">Comenzi</th><th class="n">Produse</th><th class="n">Total</th></tr></thead><tbody id="dayt"></tbody></table></div>
+    <div class="scroll"><table><thead><tr><th>Data</th><th class="n">Comenzi</th><th class="n">Produse</th><th class="n">Total</th></tr></thead><tbody id="psdayt"></tbody></table></div>
   </details>
 </section>
-
 <section class="card">
   <div class="tools">
     <h2 style="margin:0">Top produse cumpărate (06–10 nov)</h2>
-    <input type="search" id="q" placeholder="Caută produs sau model…">
+    <input type="search" id="psq" placeholder="Caută produs sau model…">
   </div>
-  <div class="upd" id="pinfo" style="margin-bottom:8px"></div>
+  <div class="upd" id="pspinfo" style="margin-bottom:8px"></div>
   <div class="scroll"><table>
-    <thead><tr><th data-k="r" class="n">#</th><th data-k="0">Nume produs</th><th data-k="1">Model</th><th data-k="2" class="n">Cantitate</th><th data-k="3" class="n">Total</th></tr></thead>
-    <tbody id="pt"></tbody>
+    <thead id="psth"><tr><th data-k="r" class="n">#</th><th data-k="0">Nume produs</th><th data-k="1">Model</th><th data-k="2" class="n">Cantitate</th><th data-k="3" class="n">Total</th></tr></thead>
+    <tbody id="pspt"></tbody>
   </table></div>
 </section>
+<div id="emwrap" style="display:none">
+<h3 class="sec" id="emag">eMAG Marketplace <small id="emupd"></small></h3>
+<section class="kpis">
+  <div class="kpi"><div class="l">Vânzări 06–10 nov</div><div class="v" id="emk1">–</div></div>
+  <div class="kpi"><div class="l">Comenzi</div><div class="v" id="emk2">–</div></div>
+  <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="emk3">–</div></div>
+  <div class="kpi"><div class="l">Valoare medie / comandă</div><div class="v" id="emk4">–</div></div>
+</section>
+<section class="card">
+  <h2>Vânzări pe zile</h2>
+  <div class="chart" id="emchart"></div>
+  <div class="days" id="emdays"></div>
+  <details><summary>Tabel pe zile</summary>
+    <div class="scroll"><table><thead><tr><th>Data</th><th class="n">Comenzi</th><th class="n">Produse</th><th class="n">Total</th></tr></thead><tbody id="emdayt"></tbody></table></div>
+  </details>
+</section>
+<section class="card">
+  <div class="tools">
+    <h2 style="margin:0">Top produse cumpărate (06–10 nov)</h2>
+    <input type="search" id="emq" placeholder="Caută produs sau model…">
+  </div>
+  <div class="upd" id="empinfo" style="margin-bottom:8px"></div>
+  <div class="scroll"><table>
+    <thead id="emth"><tr><th data-k="r" class="n">#</th><th data-k="0">Nume produs</th><th data-k="1">Model</th><th data-k="2" class="n">Cantitate</th><th data-k="3" class="n">Total</th></tr></thead>
+    <tbody id="empt"></tbody>
+  </table></div>
+</section>
+</div>
 </div>
 <script>
 const lei=v=>v.toLocaleString('ro-RO',{minimumFractionDigits:0,maximumFractionDigits:0})+' lei';
 const int=v=>v.toLocaleString('ro-RO');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let D=null,sortK=3,sortDir=-1;
-function render(){
-  const s=D.s, byDay={}; s.forEach(r=>byDay[r[0]]=r);
+const $=id=>document.getElementById(id);
+const fmtT=u=>new Date(u).toLocaleString('ro-RO',{timeZone:'Europe/Bucharest',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const B={ps:{D:null,k:3,dir:-1},em:{D:null,k:3,dir:-1}};
+function render(x,D){
+  B[x].D=D;const s=D.s, byDay={}; s.forEach(r=>byDay[r[0]]=r);
   const tot=s.reduce((a,r)=>a+r[3],0),ord=s.reduce((a,r)=>a+r[1],0),it=s.reduce((a,r)=>a+r[2],0);
-  k1.textContent=lei(tot);k2.textContent=int(ord);k3.textContent=int(it);k4.textContent=ord?lei(tot/ord):'–';
-  upd.textContent=new Date(D.u).toLocaleString('ro-RO',{timeZone:'Europe/Bucharest',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  $(x+'k1').textContent=lei(tot);$(x+'k2').textContent=int(ord);$(x+'k3').textContent=int(it);$(x+'k4').textContent=ord?lei(tot/ord):'–';
   const max=Math.max(1,...s.map(r=>r[3]));let ch='',dl='',tb='';
   for(let d=6;d<=10;d++){const r=byDay[d];const h=r?Math.max(1,r[3]/max*100):0;
-    ch+=`<div class="col${r?'':' f'}"><div class="tip">${d} nov: ${r?lei(r[3])+' · '+r[1]+' com.':'fără date'}</div><div class="b" style="height:${r?h:2}%"></div></div>`;
+    ch+=`<div class="col${r?'':' f'}"><div class="tip">${d} nov: ${r?lei(r[3])+' · '+int(r[1])+' com.':'fără date'}</div><div class="b" style="height:${r?h:2}%"></div></div>`;
     dl+=`<span>${d}</span>`;
     if(r)tb+=`<tr><td>${String(d).padStart(2,'0')}.11.2026</td><td class="n">${int(r[1])}</td><td class="n">${int(r[2])}</td><td class="n">${lei(r[3])}</td></tr>`;}
-  chart.innerHTML=ch;days.innerHTML=dl;dayt.innerHTML=tb+`<tr><th>Total</th><th class="n">${int(ord)}</th><th class="n">${int(it)}</th><th class="n">${lei(tot)}</th></tr>`;
-  pinfo.textContent=`Primele ${D.p.length} produse după valoare, din ${D.n} produse cumpărate în perioadă.`;
-  renderP();
+  $(x+'chart').innerHTML=ch;$(x+'days').innerHTML=dl;$(x+'dayt').innerHTML=tb+`<tr><th>Total</th><th class="n">${int(ord)}</th><th class="n">${int(it)}</th><th class="n">${lei(tot)}</th></tr>`;
+  $(x+'pinfo').textContent=`Primele ${D.p.length} produse după valoare, din ${D.n} produse cumpărate în perioadă.`;
+  renderP(x);
 }
-function renderP(){
-  const q=document.getElementById('q').value.trim().toLowerCase();
+function renderP(x){
+  const b=B[x],D=b.D;if(!D)return;const q=$(x+'q').value.trim().toLowerCase();
   let rows=D.p.map((r,i)=>({r:i+1,d:r})).filter(o=>!q||(o.d[0]+' '+o.d[1]).toLowerCase().includes(q));
-  rows.sort((a,b)=>{const x=sortK==='r'?a.r:a.d[sortK],y=sortK==='r'?b.r:b.d[sortK];return (typeof x==='string'?x.localeCompare(y,'ro'):x-y)*sortDir;});
-  pt.innerHTML=rows.map(o=>`<tr><td class="n m">${o.r}</td><td>${esc(o.d[0])}</td><td class="m">${esc(o.d[1])}</td><td class="n">${int(o.d[2])}</td><td class="n">${lei(o.d[3])}</td></tr>`).join('')||'<tr><td colspan="5" class="m">Niciun produs găsit.</td></tr>';
+  rows.sort((a,c)=>{const p=b.k==='r'?a.r:a.d[b.k],y=b.k==='r'?c.r:c.d[b.k];return (typeof p==='string'?p.localeCompare(y,'ro'):p-y)*b.dir;});
+  $(x+'pt').innerHTML=rows.map(o=>`<tr><td class="n m">${o.r}</td><td>${esc(o.d[0])}</td><td class="m">${esc(o.d[1])}</td><td class="n">${int(o.d[2])}</td><td class="n">${lei(o.d[3])}</td></tr>`).join('')||'<tr><td colspan="5" class="m">Niciun produs găsit.</td></tr>';
 }
-document.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k==='r'?'r':+th.dataset.k;sortDir=(k===sortK)?-sortDir:(typeof k==='number'&&k<2?1:-1);sortK=k;renderP();});
-document.getElementById('q').oninput=renderP;
+['ps','em'].forEach(x=>{
+  document.querySelectorAll('#'+x+'th th[data-k]').forEach(th=>th.onclick=()=>{const b=B[x];const k=th.dataset.k==='r'?'r':+th.dataset.k;b.dir=(k===b.k)?-b.dir:(typeof k==='number'&&k<2?1:-1);b.k=k;renderP(x);});
+  $(x+'q').oninput=()=>renderP(x);
+});
 async function load(){
-  try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status);D=await r.json();err.style.display='none';render();}
-  catch(e){err.textContent='Nu am putut încărca datele ('+e.message+').';err.style.display='block';}
+  try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status);const D=await r.json();$('err').style.display='none';
+    $('upd').textContent=fmtT(D.u);render('ps',D);
+    if(D.e){$('emwrap').style.display='';$('nav').style.display='';$('emupd').textContent='date eMAG din '+fmtT(D.e.u);render('em',D.e);}
+  }catch(e){$('err').textContent='Nu am putut încărca datele ('+e.message+').';$('err').style.display='block';}
 }
 load();setInterval(load,5*60*1000);
 </script>
