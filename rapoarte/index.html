@@ -53,26 +53,25 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
   <div class="upd">Actualizat: <b id="upd">–</b> · se reîmprospătează automat</div>
 </header>
 <div class="err" id="err"></div>
-<div class="upd" id="nav" style="display:none;margin-bottom:4px">Sari la: <a href="#emag" style="color:var(--acc)">Produse eMAG ↓</a></div>
-<h3 class="sec">ParmaShop.ro <small id="psupd"></small></h3>
+<div class="upd" style="margin-bottom:4px">Sari la: <a href="#prodps" style="color:var(--acc)">Produse ParmaShop ↓</a> · <a href="#emag" style="color:var(--acc)">Produse eMAG ↓</a></div>
 <section class="kpis">
-  <div class="kpi"><div class="l">Vânzări 06–10 nov</div><div class="v" id="psk1">–</div></div>
-  <div class="kpi em"><div class="l">din care eMAG</div><div class="v" id="emk1">–</div><div class="s" id="emk2">–</div></div>
-  <div class="kpi"><div class="l">Comenzi</div><div class="v" id="psk2">–</div></div>
-  <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="psk3">–</div></div>
-  <div class="kpi"><div class="l">Valoare medie / comandă</div><div class="v" id="psk4">–</div></div>
+  <div class="kpi"><div class="l">Vânzări total 06–10 nov</div><div class="v" id="k1">–</div><div class="s">ParmaShop.ro + eMAG</div></div>
+  <div class="kpi"><div class="l">ParmaShop.ro</div><div class="v" id="pk1">–</div><div class="s" id="pk2">–</div></div>
+  <div class="kpi em"><div class="l">eMAG</div><div class="v" id="ek1">–</div><div class="s" id="ek2">–</div></div>
+  <div class="kpi"><div class="l">Comenzi total</div><div class="v" id="k2">–</div><div class="s" id="k4">–</div></div>
+  <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="k3">–</div></div>
 </section>
 <section class="card">
   <h2>Vânzări pe zile</h2>
-  <div class="chart" id="pschart"></div>
-  <div class="days" id="psdays"></div>
+  <div class="chart" id="chart"></div>
+  <div class="days" id="days"></div>
   <details><summary>Tabel pe zile</summary>
-    <div class="scroll"><table><thead><tr><th>Data</th><th class="n">Comenzi</th><th class="n">Produse</th><th class="n">Total</th></tr></thead><tbody id="psdayt"></tbody></table></div>
+    <div class="scroll"><table><thead><tr><th>Data</th><th class="n">Comenzi ParmaShop</th><th class="n">Comenzi eMAG</th><th class="n">Vânzări ParmaShop</th><th class="n">Vânzări eMAG</th><th class="n">Total</th></tr></thead><tbody id="dayt"></tbody></table></div>
   </details>
 </section>
-<section class="card">
+<section class="card" id="prodps">
   <div class="tools">
-    <h2 style="margin:0">Top produse cumpărate (06–10 nov)</h2>
+    <h2 style="margin:0">Produse vândute pe ParmaShop.ro (06–10 nov)</h2>
     <input type="search" id="psq" placeholder="Caută produs sau model…">
   </div>
   <div class="upd" id="pspinfo" style="margin-bottom:8px"></div>
@@ -81,9 +80,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
     <tbody id="pspt"></tbody>
   </table></div>
 </section>
-<div id="emwrap" style="display:none">
-<h3 class="sec" id="emag">eMAG Marketplace <small id="emupd"></small></h3>
-<section class="card">
+<section class="card" id="emag">
   <div class="tools">
     <h2 style="margin:0">Produse vândute pe eMAG (06–10 nov)</h2>
     <input type="search" id="emq" placeholder="Caută produs sau model…">
@@ -95,7 +92,6 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
   </table></div>
 </section>
 </div>
-</div>
 <script>
 const lei=v=>v.toLocaleString('ro-RO',{minimumFractionDigits:0,maximumFractionDigits:0})+' lei';
 const int=v=>v.toLocaleString('ro-RO');
@@ -103,24 +99,24 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const $=id=>document.getElementById(id);
 const fmtT=u=>new Date(u).toLocaleString('ro-RO',{timeZone:'Europe/Bucharest',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 const B={ps:{D:null,k:3,dir:-1},em:{D:null,k:3,dir:-1}};
-function render(x,D){
-  B[x].D=D;const s=D.s, byDay={}; s.forEach(r=>byDay[r[0]]=r);
-  const tot=s.reduce((a,r)=>a+r[3],0),ord=s.reduce((a,r)=>a+r[1],0),it=s.reduce((a,r)=>a+r[2],0);
-  $(x+'k1').textContent=lei(tot);$(x+'k2').textContent=int(ord);$(x+'k3').textContent=int(it);$(x+'k4').textContent=ord?lei(tot/ord):'–';
-  const max=Math.max(1,...s.map(r=>r[3]));let ch='',dl='',tb='';
-  for(let d=6;d<=10;d++){const r=byDay[d];const h=r?Math.max(1,r[3]/max*100):0;
-    ch+=`<div class="col${r?'':' f'}"><div class="tip">${d} nov: ${r?lei(r[3])+' · '+int(r[1])+' com.':'fără date'}</div><div class="b" style="height:${r?h:2}%"></div></div>`;
+const sum=(s,i)=>s.reduce((a,r)=>a+r[i],0);
+function render(D){
+  const E=D.e||{s:[],p:[],n:0};const byT={},byE={};D.s.forEach(r=>byT[r[0]]=r);E.s.forEach(r=>byE[r[0]]=r);
+  const tot=sum(D.s,3),ord=sum(D.s,1),it=sum(D.s,2),eTot=sum(E.s,3),eOrd=sum(E.s,1);
+  const pTot=Math.max(0,tot-eTot),pOrd=Math.max(0,ord-eOrd);
+  $('k1').textContent=lei(tot);$('k2').textContent=int(ord);$('k3').textContent=int(it);$('k4').textContent=ord?'medie '+lei(tot/ord)+' / comandă':'';
+  $('pk1').textContent=lei(pTot);$('pk2').textContent=int(pOrd)+' comenzi';
+  $('ek1').textContent=lei(eTot);$('ek2').textContent=int(eOrd)+' comenzi';
+  const max=Math.max(1,...D.s.map(r=>r[3]));let ch='',dl='',tb='';
+  for(let d=6;d<=10;d++){const r=byT[d],e=byE[d]||[d,0,0,0];const h=r?Math.max(1,r[3]/max*100):0;
+    ch+=`<div class="col${r?'':' f'}"><div class="tip">${d} nov: ${r?lei(r[3])+' · '+int(r[1])+' com. (eMAG '+int(e[1])+')':'fără date'}</div><div class="b" style="height:${r?h:2}%"></div></div>`;
     dl+=`<span>${d}</span>`;
-    if(r)tb+=`<tr><td>${String(d).padStart(2,'0')}.11.2026</td><td class="n">${int(r[1])}</td><td class="n">${int(r[2])}</td><td class="n">${lei(r[3])}</td></tr>`;}
-  $(x+'chart').innerHTML=ch;$(x+'days').innerHTML=dl;$(x+'dayt').innerHTML=tb+`<tr><th>Total</th><th class="n">${int(ord)}</th><th class="n">${int(it)}</th><th class="n">${lei(tot)}</th></tr>`;
-  $(x+'pinfo').textContent=`Primele ${D.p.length} produse după valoare, din ${D.n} produse cumpărate în perioadă.`;
-  renderP(x);
-}
-function renderEm(E){
-  B.em.D=E;const s=E.s;const tot=s.reduce((a,r)=>a+r[3],0),ord=s.reduce((a,r)=>a+r[1],0);
-  $('emk1').textContent=lei(tot);$('emk2').textContent=int(ord)+' comenzi';
-  $('empinfo').textContent=`Primele ${E.p.length} produse după valoare, din ${E.n} produse vândute pe eMAG în perioadă.`;
-  renderP('em');
+    if(r)tb+=`<tr><td>${String(d).padStart(2,'0')}.11.2026</td><td class="n">${int(Math.max(0,r[1]-e[1]))}</td><td class="n">${int(e[1])}</td><td class="n">${lei(Math.max(0,r[3]-e[3]))}</td><td class="n">${lei(e[3])}</td><td class="n">${lei(r[3])}</td></tr>`;}
+  $('chart').innerHTML=ch;$('days').innerHTML=dl;$('dayt').innerHTML=tb+`<tr><th>Total</th><th class="n">${int(pOrd)}</th><th class="n">${int(eOrd)}</th><th class="n">${lei(pTot)}</th><th class="n">${lei(eTot)}</th><th class="n">${lei(tot)}</th></tr>`;
+  B.ps.D=D;B.em.D=E;
+  $('pspinfo').textContent=D.po?`Primele ${D.p.length} produse după valoare, fără comenzile venite din eMAG.`:`Primele ${D.p.length} produse după valoare (include și comenzile eMAG).`;
+  $('empinfo').textContent=`Primele ${E.p.length} produse după valoare, din ${E.n} produse vândute pe eMAG în perioadă`+(D.e?` · date eMAG din ${fmtT(D.e.u)}`:'')+'.';
+  renderP('ps');renderP('em');
 }
 function renderP(x){
   const b=B[x],D=b.D;if(!D)return;const q=$(x+'q').value.trim().toLowerCase();
@@ -134,8 +130,7 @@ function renderP(x){
 });
 async function load(){
   try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status);const D=await r.json();$('err').style.display='none';
-    $('upd').textContent=fmtT(D.u);render('ps',D);
-    if(D.e){$('emwrap').style.display='';$('nav').style.display='';$('emupd').textContent='date eMAG din '+fmtT(D.e.u);renderEm(D.e);}
+    $('upd').textContent=fmtT(D.u);render(D);
   }catch(e){$('err').textContent='Nu am putut încărca datele ('+e.message+').';$('err').style.display='block';}
 }
 load();setInterval(load,5*60*1000);
