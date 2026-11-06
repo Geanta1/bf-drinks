@@ -15,11 +15,13 @@ header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-be
 h1{font-size:22px;margin:0}h2{font-size:17px;margin:0 0 12px}
 .upd{color:var(--muted);font-size:13px}
 .upd b{color:var(--ink)}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
 .kpi,.card{background:var(--card);border:1px solid var(--line);border-radius:12px}
 .kpi{padding:14px 16px}
 .kpi .l{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
 .kpi .v{font-size:24px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi .s{color:var(--muted);font-size:12px;margin-top:2px}
+.kpi.em{border-color:var(--acc2)}
 .card{padding:16px;margin-bottom:16px}
 .chart{display:flex;align-items:flex-end;gap:3px;height:170px;border-bottom:1px solid var(--line);padding-top:18px}
 .col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;position:relative;min-width:0}
@@ -51,10 +53,11 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
   <div class="upd">Actualizat: <b id="upd">–</b> · se reîmprospătează automat</div>
 </header>
 <div class="err" id="err"></div>
-<div class="upd" id="nav" style="display:none;margin-bottom:4px">Sari la: <a href="#emag" style="color:var(--acc)">eMAG Marketplace ↓</a></div>
+<div class="upd" id="nav" style="display:none;margin-bottom:4px">Sari la: <a href="#emag" style="color:var(--acc)">Produse eMAG ↓</a></div>
 <h3 class="sec">ParmaShop.ro <small id="psupd"></small></h3>
 <section class="kpis">
   <div class="kpi"><div class="l">Vânzări 06–10 nov</div><div class="v" id="psk1">–</div></div>
+  <div class="kpi em"><div class="l">din care eMAG</div><div class="v" id="emk1">–</div><div class="s" id="emk2">–</div></div>
   <div class="kpi"><div class="l">Comenzi</div><div class="v" id="psk2">–</div></div>
   <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="psk3">–</div></div>
   <div class="kpi"><div class="l">Valoare medie / comandă</div><div class="v" id="psk4">–</div></div>
@@ -80,23 +83,9 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 </section>
 <div id="emwrap" style="display:none">
 <h3 class="sec" id="emag">eMAG Marketplace <small id="emupd"></small></h3>
-<section class="kpis">
-  <div class="kpi"><div class="l">Vânzări 06–10 nov</div><div class="v" id="emk1">–</div></div>
-  <div class="kpi"><div class="l">Comenzi</div><div class="v" id="emk2">–</div></div>
-  <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="emk3">–</div></div>
-  <div class="kpi"><div class="l">Valoare medie / comandă</div><div class="v" id="emk4">–</div></div>
-</section>
-<section class="card">
-  <h2>Vânzări pe zile</h2>
-  <div class="chart" id="emchart"></div>
-  <div class="days" id="emdays"></div>
-  <details><summary>Tabel pe zile</summary>
-    <div class="scroll"><table><thead><tr><th>Data</th><th class="n">Comenzi</th><th class="n">Produse</th><th class="n">Total</th></tr></thead><tbody id="emdayt"></tbody></table></div>
-  </details>
-</section>
 <section class="card">
   <div class="tools">
-    <h2 style="margin:0">Top produse cumpărate (06–10 nov)</h2>
+    <h2 style="margin:0">Produse vândute pe eMAG (06–10 nov)</h2>
     <input type="search" id="emq" placeholder="Caută produs sau model…">
   </div>
   <div class="upd" id="empinfo" style="margin-bottom:8px"></div>
@@ -127,6 +116,12 @@ function render(x,D){
   $(x+'pinfo').textContent=`Primele ${D.p.length} produse după valoare, din ${D.n} produse cumpărate în perioadă.`;
   renderP(x);
 }
+function renderEm(E){
+  B.em.D=E;const s=E.s;const tot=s.reduce((a,r)=>a+r[3],0),ord=s.reduce((a,r)=>a+r[1],0);
+  $('emk1').textContent=lei(tot);$('emk2').textContent=int(ord)+' comenzi';
+  $('empinfo').textContent=`Primele ${E.p.length} produse după valoare, din ${E.n} produse vândute pe eMAG în perioadă.`;
+  renderP('em');
+}
 function renderP(x){
   const b=B[x],D=b.D;if(!D)return;const q=$(x+'q').value.trim().toLowerCase();
   let rows=D.p.map((r,i)=>({r:i+1,d:r})).filter(o=>!q||(o.d[0]+' '+o.d[1]).toLowerCase().includes(q));
@@ -140,7 +135,7 @@ function renderP(x){
 async function load(){
   try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status);const D=await r.json();$('err').style.display='none';
     $('upd').textContent=fmtT(D.u);render('ps',D);
-    if(D.e){$('emwrap').style.display='';$('nav').style.display='';$('emupd').textContent='date eMAG din '+fmtT(D.e.u);render('em',D.e);}
+    if(D.e){$('emwrap').style.display='';$('nav').style.display='';$('emupd').textContent='date eMAG din '+fmtT(D.e.u);renderEm(D.e);}
   }catch(e){$('err').textContent='Nu am putut încărca datele ('+e.message+').';$('err').style.display='block';}
 }
 load();setInterval(load,5*60*1000);
