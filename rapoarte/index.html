@@ -42,6 +42,7 @@ input[type=search]{padding:8px 10px;border:1px solid var(--line);border-radius:8
 .scroll{overflow-x:auto}
 .err{background:#fde8e8;color:#8a1c1c;padding:10px 14px;border-radius:8px;margin-bottom:16px;display:none}
 h3.sec{font-size:19px;margin:28px 0 12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}h3.sec small{font-size:13px;font-weight:400;color:var(--muted)}
+.ly{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}.ly b{color:var(--ink);font-weight:600}.ly .up{color:#2e8540}.ly .dn{color:var(--acc)}
 details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px}
 @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi .v{font-size:20px}.days span:nth-child(even){visibility:hidden}td.m{white-space:normal}}
 </style>
@@ -65,6 +66,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
   <h2>Vânzări pe zile</h2>
   <div class="chart" id="chart"></div>
   <div class="days" id="days"></div>
+  <div class="ly" id="ly"></div>
   <details><summary>Tabel pe zile</summary>
     <div class="scroll"><table><thead><tr><th>Data</th><th class="n">Comenzi ParmaShop</th><th class="n">Comenzi eMAG</th><th class="n">Vânzări ParmaShop</th><th class="n">Vânzări eMAG</th><th class="n">Total</th></tr></thead><tbody id="dayt"></tbody></table></div>
   </details>
@@ -98,6 +100,7 @@ const int=v=>v.toLocaleString('ro-RO');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const $=id=>document.getElementById(id);
 const fmtT=u=>new Date(u).toLocaleString('ro-RO',{timeZone:'Europe/Bucharest',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const LY=[["7 nov",3292,1103278],["8 nov",799,272110],["9 nov",1012,367630]];
 const B={ps:{D:null,k:3,dir:-1},em:{D:null,k:3,dir:-1}};
 const sum=(s,i)=>s.reduce((a,r)=>a+r[i],0);
 function render(D){
@@ -112,6 +115,7 @@ function render(D){
     ch+=`<div class="col${r?'':' f'}"><div class="tip">${d} nov: ${r?lei(r[3])+' · '+int(r[1])+' com. (eMAG '+int(e[1])+')':'fără date'}</div><div class="b" style="height:${r?h:2}%"></div></div>`;
     dl+=`<span>${d}</span>`;
     if(r)tb+=`<tr><td>${String(d).padStart(2,'0')}.11.2026</td><td class="n">${int(Math.max(0,r[1]-e[1]))}</td><td class="n">${int(e[1])}</td><td class="n">${lei(Math.max(0,r[3]-e[3]))}</td><td class="n">${lei(e[3])}</td><td class="n">${lei(r[3])}</td></tr>`;}
+  if(LY.length){let h='<span>Anul trecut (BF 7–9 nov 2025), pe zi de campanie:</span>';LY.forEach((y,i)=>{const r=byT[6+i];let c='';if(r&&y[2]&&Date.now()>Date.UTC(2026,10,6+i,22)){const p=(r[3]/y[2]-1)*100;c=` <span class="${p>=0?'up':'dn'}">${p>=0?'+':''}${Math.round(p)}%</span>`;}h+=`<span>Ziua ${i+1} (${y[0]}): <b>${lei(y[2])}</b> · ${int(y[1])} com.${c}</span>`;});h+=`<span>Total 2025: <b>${lei(LY.reduce((a,y)=>a+y[2],0))}</b> · ${int(LY.reduce((a,y)=>a+y[1],0))} com.</span>`;$('ly').innerHTML=h;}
   $('chart').innerHTML=ch;$('days').innerHTML=dl;$('dayt').innerHTML=tb+`<tr><th>Total</th><th class="n">${int(pOrd)}</th><th class="n">${int(eOrd)}</th><th class="n">${lei(pTot)}</th><th class="n">${lei(eTot)}</th><th class="n">${lei(tot)}</th></tr>`;
   B.ps.D=D;B.em.D=E;
   $('pspinfo').textContent=D.po?`Primele ${D.p.length} produse după valoare, fără comenzile venite din eMAG.`:`Primele ${D.p.length} produse după valoare (include și comenzile eMAG).`;
