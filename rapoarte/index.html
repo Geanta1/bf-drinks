@@ -46,6 +46,7 @@ input[type=search]{padding:8px 10px;border:1px solid var(--line);border-radius:8
 h3.sec{font-size:19px;margin:28px 0 12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}h3.sec small{font-size:13px;font-weight:400;color:var(--muted)}
 .ly{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}.ly b{color:var(--ink);font-weight:600}.ly .up{color:#2e8540}.ly .dn{color:var(--acc)}
 .sdk{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-bottom:10px}.sdk .big{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.cur{display:inline-flex;margin-left:10px;border:1px solid var(--line);border-radius:8px;overflow:hidden;vertical-align:middle}.cur button{border:0;background:var(--card);color:var(--muted);font:600 12px system-ui,sans-serif;padding:4px 10px;cursor:pointer}.cur button.on{background:var(--acc);color:#fff}
 details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px}
 @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi .v{font-size:20px}.chart,.days{gap:12px}.bw .v{font-size:10.5px}td.m{white-space:normal}}
 </style>
@@ -54,7 +55,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 <div class="wrap">
 <header>
   <h1>Vânzări · 06–10 noiembrie 2026</h1>
-  <div class="upd">Actualizat: <b id="upd">–</b> · se reîmprospătează automat</div>
+  <div class="upd">Actualizat: <b id="upd">–</b> · se reîmprospătează automat <span class="cur"><button data-c="RON">RON</button><button data-c="EUR">EUR</button></span></div>
 </header>
 <div class="err" id="err"></div>
 <div class="upd" style="margin-bottom:4px">Sari la: <a href="#prodps" style="color:var(--acc)">Produse ParmaShop ↓</a> · <a href="#emag" style="color:var(--acc)">Produse eMAG ↓</a> · <a href="#sameday" style="color:var(--acc)">AWB Sameday ↓</a></div>
@@ -104,7 +105,9 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 </section>
 </div>
 <script>
-const lei=v=>v.toLocaleString('ro-RO',{minimumFractionDigits:0,maximumFractionDigits:0})+' lei';
+const RATE=5.35;let CUR='RON';try{CUR=localStorage.getItem('cur')==='EUR'?'EUR':'RON'}catch(e){}
+const cv=v=>CUR==='EUR'?v/RATE:v;
+const lei=v=>cv(v).toLocaleString('ro-RO',{minimumFractionDigits:0,maximumFractionDigits:0})+(CUR==='EUR'?' €':' lei');
 const int=v=>v.toLocaleString('ro-RO');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const $=id=>document.getElementById(id);
@@ -120,7 +123,7 @@ function render(D){
   $('pk1').textContent=lei(pTot);$('pk2').textContent=int(pOrd)+' comenzi'+(pOrd?' · medie '+lei(pTot/pOrd):'');
   $('ek1').textContent=lei(eTot);$('ek2').textContent=int(eOrd)+' comenzi'+(eOrd?' · medie '+lei(eTot/eOrd):'');
   const max=Math.max(1,...D.s.map(r=>r[3]),...LY.map(y=>y[2]))*1.1;let ch='',dl='',tb='';
-  const cmp=v=>v>=1e6?(v/1e6).toLocaleString('ro-RO',{maximumFractionDigits:2})+' mil.':Math.round(v/1000)+' mii';
+  const cmp=v=>(v=cv(v))>=1e6?(v/1e6).toLocaleString('ro-RO',{maximumFractionDigits:2})+' mil.':Math.round(v/1000)+' mii';
   const WD=['Dum','Lun','Mar','Mie','Joi','Vin','Sâm'];
   for(let d=6;d<=8;d++){const r=byT[d],e=byE[d]||[d,0,0,0],y=LY[d-6];const pv=r?Math.max(0,r[3]-e[3]):0,po=r?Math.max(0,r[1]-e[1]):0;
     const bar=(cls,v,lab)=>{const h=v?Math.max(1.5,v/max*100):0;return `<div class="bw ${cls}"><div class="b" style="height:${h}%"></div><div class="v" style="bottom:calc(${h}% + 5px)">${lab}</div></div>`;};
@@ -158,9 +161,12 @@ function renderP(x){
   document.querySelectorAll('#'+x+'th th[data-k]').forEach(th=>th.onclick=()=>{const b=B[x];const k=th.dataset.k==='r'?'r':+th.dataset.k;b.dir=(k===b.k)?-b.dir:(typeof k==='number'&&k<2?1:-1);b.k=k;renderP(x);});
   $(x+'q').oninput=()=>renderP(x);
 });
+let LAST=null;
+const setCur=c=>{CUR=c;try{localStorage.setItem('cur',c)}catch(e){}document.querySelectorAll('.cur button').forEach(b=>b.classList.toggle('on',b.dataset.c===CUR));if(LAST)render(LAST);};
+document.querySelectorAll('.cur button').forEach(b=>b.onclick=()=>setCur(b.dataset.c));setCur(CUR);
 async function load(){
   try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status);const D=await r.json();$('err').style.display='none';
-    $('upd').textContent=fmtT(D.u);render(D);
+    $('upd').textContent=fmtT(D.u);LAST=D;render(D);
   }catch(e){$('err').textContent='Nu am putut încărca datele ('+e.message+').';$('err').style.display='block';}
 }
 load();setInterval(load,5*60*1000);
