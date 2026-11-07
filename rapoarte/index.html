@@ -23,17 +23,16 @@ h1{font-size:22px;margin:0}h2{font-size:17px;margin:0 0 12px}
 .kpi .s{color:var(--muted);font-size:12px;margin-top:2px}
 .kpi.em{border-color:var(--acc2)}
 .card{padding:16px;margin-bottom:16px}
-.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin:-4px 0 6px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}.legend i.lps{background:var(--bar)}.legend i.lem{background:var(--acc2)}.legend i.lly{border:1.5px dashed var(--muted);background:transparent}
-.chart{position:relative;display:flex;gap:18px;height:230px;padding:26px 6px 0;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to top,transparent 0,transparent calc(25% - 1px),color-mix(in srgb,var(--line) 70%,transparent) calc(25% - 1px),color-mix(in srgb,var(--line) 70%,transparent) 25%) 0 26px/100% calc(100% - 26px) no-repeat}
-.col{flex:1;position:relative;height:100%;min-width:0;cursor:default}
-.col .gh{position:absolute;left:8%;right:8%;bottom:0;border:1.5px dashed color-mix(in srgb,var(--muted) 70%,transparent);border-bottom:0;border-radius:8px 8px 0 0}
-.col .bar{position:absolute;left:22%;right:22%;bottom:0;display:flex;flex-direction:column;border-radius:8px 8px 0 0;overflow:hidden;transition:height .5s ease;box-shadow:0 1px 0 rgba(0,0,0,.04)}
-.col .bar .em{background:var(--acc2)}.col .bar .ps{background:linear-gradient(180deg,color-mix(in srgb,var(--bar) 88%,#fff),var(--bar));flex:1}
-.col .val{position:absolute;left:0;right:0;text-align:center;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.col.f .val{color:var(--muted);font-weight:400}
-.col .tip{display:none;position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% - 10px);background:var(--ink);color:var(--bg);font-size:12px;line-height:1.5;padding:6px 9px;border-radius:8px;white-space:nowrap;z-index:3;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.18)}
-.col:hover .tip{display:block}.col:hover .bar{filter:brightness(1.06)}
-.days{display:flex;gap:18px;padding:6px 6px 0}.days span{flex:1;text-align:center;font-size:12px;color:var(--muted);min-width:0}.days span b{display:block;color:var(--ink);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted);margin:-4px 0 10px}.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}.legend i.l26{background:var(--bar)}.legend i.l25{background:color-mix(in srgb,var(--muted) 35%,transparent)}
+.chart{display:flex;gap:28px;height:220px;padding-top:24px;border-bottom:1px solid var(--line)}
+.grp{flex:1;display:flex;justify-content:center;align-items:flex-end;gap:10px;position:relative;height:100%;min-width:0}
+.bw{position:relative;width:38%;max-width:84px;height:100%;display:flex;align-items:flex-end}
+.bw .b{width:100%;border-radius:8px 8px 0 0;transition:height .5s ease}
+.bw.y26 .b{background:var(--bar)}.bw.y25 .b{background:color-mix(in srgb,var(--muted) 35%,transparent)}
+.bw .v{position:absolute;left:-20px;right:-20px;text-align:center;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.bw.y25 .v{color:var(--muted);font-weight:500}
+.grp .tip{display:none;position:absolute;left:50%;transform:translateX(-50%);top:0;background:var(--ink);color:var(--bg);font-size:12px;line-height:1.5;padding:6px 9px;border-radius:8px;white-space:nowrap;z-index:3;pointer-events:none}
+.grp:hover .tip{display:block}
+.days{display:flex;gap:28px;padding-top:6px}.days span{flex:1;text-align:center;font-size:12px;color:var(--muted);min-width:0}.days span b{display:block;color:var(--ink);font-weight:600}
 table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;cursor:pointer;user-select:none;white-space:nowrap}
@@ -48,7 +47,7 @@ h3.sec{font-size:19px;margin:28px 0 12px;display:flex;align-items:baseline;gap:1
 .ly{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}.ly b{color:var(--ink);font-weight:600}.ly .up{color:#2e8540}.ly .dn{color:var(--acc)}
 .sdk{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-bottom:10px}.sdk .big{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:1px}
 details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px}
-@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi .v{font-size:20px}.chart,.days{gap:8px}.col .bar{left:14%;right:14%}.col .val{font-size:10.5px}td.m{white-space:normal}}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi .v{font-size:20px}.chart,.days{gap:12px}.bw .v{font-size:10.5px}td.m{white-space:normal}}
 </style>
 </head>
 <body>
@@ -68,7 +67,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 </section>
 <section class="card">
   <h2>Vânzări pe zile</h2>
-  <div class="legend"><span><i class="lps"></i>ParmaShop.ro</span><span><i class="lem"></i>eMAG</span><span><i class="lly"></i>Anul trecut, aceeași zi de campanie</span></div>
+  <div class="legend"><span><i class="l26"></i>2026 (ParmaShop.ro + eMAG)</span><span><i class="l25"></i>2025, aceeași zi de campanie</span></div>
   <div class="chart" id="chart"></div>
   <div class="days" id="days"></div>
   <div class="ly" id="ly"></div>
@@ -120,14 +119,15 @@ function render(D){
   $('k1').textContent=lei(tot);$('k2').textContent=int(ord);$('k3').textContent=int(it);$('k4').textContent=ord?'medie '+lei(tot/ord)+' / comandă':'';
   $('pk1').textContent=lei(pTot);$('pk2').textContent=int(pOrd)+' comenzi'+(pOrd?' · medie '+lei(pTot/pOrd):'');
   $('ek1').textContent=lei(eTot);$('ek2').textContent=int(eOrd)+' comenzi'+(eOrd?' · medie '+lei(eTot/eOrd):'');
-  const max=Math.max(1,...D.s.map(r=>r[3]),...LY.map(y=>y[2]))*1.08;let ch='',dl='',tb='';
+  const max=Math.max(1,...D.s.map(r=>r[3]),...LY.map(y=>y[2]))*1.1;let ch='',dl='',tb='';
   const cmp=v=>v>=1e6?(v/1e6).toLocaleString('ro-RO',{maximumFractionDigits:2})+' mil.':Math.round(v/1000)+' mii';
   const WD=['Dum','Lun','Mar','Mie','Joi','Vin','Sâm'];
-  for(let d=6;d<=10;d++){const r=byT[d],e=byE[d]||[d,0,0,0],y=LY[d-6];const h=r?Math.max(1.5,r[3]/max*100):0;
-    const eh=r&&r[3]?Math.min(100,e[3]/r[3]*100):0,pv=r?Math.max(0,r[3]-e[3]):0,po=r?Math.max(0,r[1]-e[1]):0;
-    const tip=r?`<b>${d} noiembrie</b><br>Total: ${lei(r[3])} · ${int(r[1])} com.<br>ParmaShop: ${lei(pv)} · ${int(po)} com.<br>eMAG: ${lei(e[3])} · ${int(e[1])} com.`+(y?`<br>2025 (${y[0]}): ${lei(y[2])}`:''):`${d} noiembrie: încă fără date`+(y?`<br>2025 (${y[0]}): ${lei(y[2])}`:'');
-    ch+=`<div class="col${r?'':' f'}"><div class="tip">${tip}</div>${y?`<div class="gh" style="height:${y[2]/max*100}%"></div>`:''}${r?`<div class="bar" style="height:${h}%"><div class="em" style="height:${eh}%"></div><div class="ps"></div></div>`:''}<div class="val" style="bottom:calc(${r?h:0}% + 6px)">${r?cmp(r[3]):'–'}</div></div>`;
-    dl+=`<span><b>${WD[new Date(Date.UTC(2026,10,d)).getUTCDay()]}</b>${d} nov</span>`;
+  for(let d=6;d<=8;d++){const r=byT[d],e=byE[d]||[d,0,0,0],y=LY[d-6];const pv=r?Math.max(0,r[3]-e[3]):0,po=r?Math.max(0,r[1]-e[1]):0;
+    const bar=(cls,v,lab)=>{const h=v?Math.max(1.5,v/max*100):0;return `<div class="bw ${cls}"><div class="b" style="height:${h}%"></div><div class="v" style="bottom:calc(${h}% + 5px)">${lab}</div></div>`;};
+    const tip=(r?`<b>${d} noiembrie 2026</b><br>ParmaShop: ${lei(pv)} · ${int(po)} com.<br>eMAG: ${lei(e[3])} · ${int(e[1])} com.`:`${d} noiembrie: încă fără date`)+(y?`<br>2025 (${y[0]}): ${lei(y[2])}`:'');
+    ch+=`<div class="grp"><div class="tip">${tip}</div>${bar('y26',r?r[3]:0,r?cmp(r[3]):'–')}${y?bar('y25',y[2],cmp(y[2])):''}</div>`;
+    dl+=`<span><b>Ziua ${d-5} · ${WD[new Date(Date.UTC(2026,10,d)).getUTCDay()]} ${d} nov</b>2025: ${y?y[0]:''}</span>`;}
+  for(let d=6;d<=10;d++){const r=byT[d],e=byE[d]||[d,0,0,0];const pv=r?Math.max(0,r[3]-e[3]):0,po=r?Math.max(0,r[1]-e[1]):0;
     if(r)tb+=`<tr><td>${String(d).padStart(2,'0')}.11.2026</td><td class="n">${int(po)}</td><td class="n">${int(e[1])}</td><td class="n">${lei(pv)}</td><td class="n">${lei(e[3])}</td><td class="n">${lei(r[3])}</td></tr>`;}
   if(LY.length){let h='<span>Anul trecut (BF 7–9 nov 2025), pe zi de campanie:</span>';LY.forEach((y,i)=>{const r=byT[6+i];let c='';if(r&&y[2]&&Date.now()>Date.UTC(2026,10,6+i,22)){const p=(r[3]/y[2]-1)*100;c=` <span class="${p>=0?'up':'dn'}">${p>=0?'+':''}${Math.round(p)}%</span>`;}h+=`<span>Ziua ${i+1} (${y[0]}): <b>${lei(y[2])}</b> · ${int(y[1])} com.${c}</span>`;});h+=`<span>Total 2025: <b>${lei(LY.reduce((a,y)=>a+y[2],0))}</b> · ${int(LY.reduce((a,y)=>a+y[1],0))} com.</span>`;$('ly').innerHTML=h;}
   $('chart').innerHTML=ch;$('days').innerHTML=dl;$('dayt').innerHTML=tb+`<tr><th>Total</th><th class="n">${int(pOrd)}</th><th class="n">${int(eOrd)}</th><th class="n">${lei(pTot)}</th><th class="n">${lei(eTot)}</th><th class="n">${lei(tot)}</th></tr>`;
