@@ -82,6 +82,16 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
   <div class="sdk"><div><span class="big" id="sdn">–</span> AWB-uri, indiferent de status</div><div class="upd" id="sdd"></div></div>
   <div class="scroll"><table><thead id="sdh"></thead><tbody id="sdt"></tbody></table></div>
 </section>
+<section class="card" id="sddet" style="display:none">
+  <div class="tools"><h2 style="margin:0">Sameday · Colete deteriorate</h2><div class="upd"><b class="cnt">0</b> AWB</div></div>
+  <div class="upd" style="margin-bottom:8px">AWB-uri cu colet deteriorat (cumulativ, din 6 nov). Sunt incluse și în tabelul de mai sus.</div>
+  <div class="scroll"><table><thead><tr><th>AWB</th><th class="n">Ziua</th><th>Sursă</th><th>Status Sameday</th></tr></thead><tbody></tbody></table></div>
+</section>
+<section class="card" id="sdref" style="display:none">
+  <div class="tools"><h2 style="margin:0">Sameday · Refuzuri la livrare</h2><div class="upd"><b class="cnt">0</b> AWB</div></div>
+  <div class="upd" style="margin-bottom:8px">AWB-uri refuzate de client la livrare (cumulativ, din 6 nov). Sunt incluse și în tabelul de mai sus.</div>
+  <div class="scroll"><table><thead><tr><th>AWB</th><th class="n">Ziua</th><th>Sursă</th><th>Status Sameday</th></tr></thead><tbody></tbody></table></div>
+</section>
 <section class="card" id="prodps">
   <div class="tools">
     <h2 style="margin:0">Produse vândute pe ParmaShop.ro (06–10 nov)</h2>
@@ -155,6 +165,11 @@ function renderSD(S){
   let rows='';const tot={};CAT.forEach(([k,col,desc])=>{const v=days.map(d=>S.c[d][k]||0);const t=v.reduce((a,b)=>a+b,0);if(!t)return;rows+=`<tr><td><span class="dot" style="background:${col}"></span>${k} <span class="m" style="color:var(--muted);font-size:12px">· ${desc}</span></td>${v.map(x=>`<td class="n">${x?int(x):'–'}</td>`).join('')}<td class="n"><b>${int(t)}</b></td></tr>`;});
   rows+='<tr><th>Total</th>'+days.map(d=>`<th class="n">${int(Object.values(S.c[d]).reduce((a,b)=>a+b,0))}</th>`).join('')+`<th class="n">${int(S.n)}</th></tr>`;
   $('sdt').innerHTML=rows;
+  renderSDX(S.x);
+}
+function renderSDX(X){
+  const mk=(id,list)=>{const s=$(id);if(!list||!list.length){s.style.display='none';return;}s.style.display='';s.querySelector('tbody').innerHTML=list.map(r=>`<tr><td class="m">${esc(r[0])}</td><td class="n">${esc(String(r[1]))} nov</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('');s.querySelector('.cnt').textContent=list.length;};
+  mk('sddet',X&&X.det);mk('sdref',X&&X.ref);
 }
 function renderP(x){
   const b=B[x],D=b.D;if(!D)return;const q=$(x+'q').value.trim().toLowerCase();
