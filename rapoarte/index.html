@@ -83,12 +83,12 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
   <div class="scroll"><table><thead id="sdh"></thead><tbody id="sdt"></tbody></table></div>
 </section>
 <section class="card" id="sddet" style="display:none">
-  <div class="tools"><h2 style="margin:0">Sameday · Colete deteriorate</h2><div class="upd"><b class="cnt">0</b> AWB</div></div>
+  <div class="tools"><h2 style="margin:0">Sameday · Colete deteriorate</h2><div class="upd"><b class="cnt">0</b> AWB · <b class="pct"></b></div></div>
   <div class="upd" style="margin-bottom:8px">AWB-uri cu colet deteriorat (cumulativ, din 6 nov). Sunt incluse și în tabelul de mai sus.</div>
   <div class="scroll"><table><thead><tr><th>AWB</th><th class="n">Ziua</th><th>Sursă</th><th>Status Sameday</th></tr></thead><tbody></tbody></table></div>
 </section>
 <section class="card" id="sdref" style="display:none">
-  <div class="tools"><h2 style="margin:0">Sameday · Refuzuri la livrare</h2><div class="upd"><b class="cnt">0</b> AWB</div></div>
+  <div class="tools"><h2 style="margin:0">Sameday · Refuzuri la livrare</h2><div class="upd"><b class="cnt">0</b> AWB · <b class="pct"></b></div></div>
   <div class="upd" style="margin-bottom:8px">AWB-uri refuzate de client la livrare (cumulativ, din 6 nov). Sunt incluse și în tabelul de mai sus.</div>
   <div class="scroll"><table><thead><tr><th>AWB</th><th class="n">Ziua</th><th>Sursă</th><th>Status Sameday</th></tr></thead><tbody></tbody></table></div>
 </section>
@@ -149,13 +149,13 @@ function render(D){
     if(r)tb+=`<tr><td>${String(d).padStart(2,'0')}.11.2026</td><td class="n">${int(po)}</td><td class="n">${int(e[1])}</td><td class="n">${lei(pv)}</td><td class="n">${lei(e[3])}</td><td class="n">${lei(r[3])}</td></tr>`;}
   if(LY.length){let h='<span>Anul trecut (BF 7–9 nov 2025), pe zi de campanie:</span>';LY.forEach((y,i)=>{const r=byT[6+i];let c='';if(r&&y[2]&&Date.now()>Date.UTC(2026,10,5+i,22)){const p=(r[3]/y[2]-1)*100,lv=Date.now()<Date.UTC(2026,10,6+i,22);c=` <span class="${p>=0?'up':'dn'}">${p>=0?'+':''}${Math.round(p)}%${lv?' până acum':''}</span>`;}h+=`<span>Ziua ${i+1} (${y[0]}): <b>${lei(y[2])}</b> · ${int(y[1])} com.${c}</span>`;});h+=`<span>Total 2025: <b>${lei(LY.reduce((a,y)=>a+y[2],0))}</b> · ${int(LY.reduce((a,y)=>a+y[1],0))} com.</span>`;$('ly').innerHTML=h;}
   $('chart').innerHTML=ch;$('days').innerHTML=dl;$('dd').innerHTML=DD[SEL]+'<div class="hint">Atinge o zi din grafic pentru detalii.</div>';$('dayt').innerHTML=tb+`<tr><th>Total</th><th class="n">${int(pOrd)}</th><th class="n">${int(eOrd)}</th><th class="n">${lei(pTot)}</th><th class="n">${lei(eTot)}</th><th class="n">${lei(tot)}</th></tr>`;
-  renderSD(D.sd);
+  renderSD(D.sd,D.s.reduce((a,r)=>a+r[1],0));
   B.ps.D=D;B.em.D=E;
   $('pspinfo').textContent=D.po?`Primele ${D.p.length} produse după valoare, fără comenzile venite din eMAG.`:`Primele ${D.p.length} produse după valoare (include și comenzile eMAG).`;
   $('empinfo').textContent=`Primele ${E.p.length} produse după valoare, din ${E.n} produse vândute pe eMAG în perioadă`+(D.e?` · date eMAG din ${fmtT(D.e.u)}`:'')+'.';
   renderP('ps');renderP('em');
 }
-function renderSD(S){
+function renderSD(S,TO){
   if(!S){$('sameday').style.display='none';return;}$('sameday').style.display='';
   const CAT=[['De ridicat','#9aa3b5','Alocate pentru ridicare de curier'],['În tranzit','#5b8def','Ridicate, în depozite / pe drum'],['În livrare','#c9a227','La curier sau în easybox / punct de livrare'],['Livrat','#2e8540','Livrate'],['Anulat','#8a1c2b','Anulate'],['Retur','#e07a2b','Retur']];
   const days=Object.keys(S.c).map(Number).sort((a,b)=>a-b);
@@ -165,10 +165,11 @@ function renderSD(S){
   let rows='';const tot={};CAT.forEach(([k,col,desc])=>{const v=days.map(d=>S.c[d][k]||0);const t=v.reduce((a,b)=>a+b,0);if(!t)return;rows+=`<tr><td><span class="dot" style="background:${col}"></span>${k} <span class="m" style="color:var(--muted);font-size:12px">· ${desc}</span></td>${v.map(x=>`<td class="n">${x?int(x):'–'}</td>`).join('')}<td class="n"><b>${int(t)}</b></td></tr>`;});
   rows+='<tr><th>Total</th>'+days.map(d=>`<th class="n">${int(Object.values(S.c[d]).reduce((a,b)=>a+b,0))}</th>`).join('')+`<th class="n">${int(S.n)}</th></tr>`;
   $('sdt').innerHTML=rows;
-  renderSDX(S.x);
+  renderSDX(S.x,TO,S.n);
 }
-function renderSDX(X){
-  const mk=(id,list)=>{const s=$(id);if(!list||!list.length){s.style.display='none';return;}s.style.display='';s.querySelector('tbody').innerHTML=list.map(r=>`<tr><td class="m">${esc(r[0])}</td><td class="n">${esc(String(r[1]))} nov</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('');s.querySelector('.cnt').textContent=list.length;};
+function renderSDX(X,TO,AW){
+  const pc=(c,b)=>b?(c/b*100).toLocaleString('ro-RO',{minimumFractionDigits:2,maximumFractionDigits:2})+'%':'–';
+  const mk=(id,list)=>{const s=$(id);if(!list||!list.length){s.style.display='none';return;}s.style.display='';s.querySelector('tbody').innerHTML=list.map(r=>`<tr><td class="m">${esc(r[0])}</td><td class="n">${esc(String(r[1]))} nov</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('');s.querySelector('.cnt').textContent=list.length;s.querySelector('.pct').textContent=pc(list.length,TO)+' din comenzile totale ('+int(TO)+') · '+pc(list.length,AW)+' din AWB ('+int(AW)+')';};
   mk('sddet',X&&X.det);mk('sdref',X&&X.ref);
 }
 function renderP(x){
