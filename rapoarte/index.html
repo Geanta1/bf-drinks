@@ -49,6 +49,16 @@ h3.sec{font-size:19px;margin:28px 0 12px;display:flex;align-items:baseline;gap:1
 .cur{display:inline-flex;margin-left:10px;border:1px solid var(--line);border-radius:8px;overflow:hidden;vertical-align:middle}.cur button{border:0;background:var(--card);color:var(--muted);font:600 12px system-ui,sans-serif;padding:4px 10px;cursor:pointer}.cur button.on{background:var(--acc);color:#fff}
 details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px}
 @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi .v{font-size:20px}.chart,.days{gap:12px}.bw .v{font-size:10.5px}td.m{white-space:normal}}
+.ptabs{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ptabs button{border:0;background:transparent;color:var(--ink);font:inherit;font-size:14px;padding:7px 16px;cursor:pointer}
+.ptabs button.on{background:var(--acc);color:#fff;font-weight:600}
+.plist{max-height:520px;overflow:auto;border:1px solid var(--line);border-radius:8px}
+.plist thead th{position:sticky;top:0;background:var(--card);z-index:1}
+.plist tr:last-child td{border-bottom:0}
+.plist .mdl{font-size:11px;color:var(--muted);margin-top:1px}
+.pmore{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pmore:empty{display:none}
+.pmore button{border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -92,27 +102,27 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
   <div class="upd" style="margin-bottom:8px">AWB-uri refuzate de client la livrare (cumulativ, din 6 nov). Sunt incluse și în tabelul de mai sus.</div>
   <div class="scroll"><table><thead><tr><th>AWB</th><th class="n">Ziua</th><th>Sursă</th><th>Status Sameday</th></tr></thead><tbody></tbody></table></div>
 </section>
-<section class="card" id="prodps">
+<section class="card" id="prod">
   <div class="tools">
-    <h2 style="margin:0">Produse vândute pe ParmaShop.ro (06–10 nov)</h2>
-    <input type="search" id="psq" placeholder="Caută produs sau model…">
+    <h2 style="margin:0">Produse vândute (06–10 nov)</h2>
+    <div class="ptabs"><button data-p="ps" class="on">ParmaShop.ro</button><button data-p="em">eMAG</button></div>
   </div>
-  <div class="upd" id="pspinfo" style="margin-bottom:8px"></div>
-  <div class="scroll"><table>
-    <thead id="psth"><tr><th data-k="r" class="n">#</th><th data-k="0">Nume produs</th><th data-k="1">Model</th><th data-k="2" class="n">Cantitate</th><th data-k="3" class="n">Total</th></tr></thead>
-    <tbody id="pspt"></tbody>
-  </table></div>
-</section>
-<section class="card" id="emag">
-  <div class="tools">
-    <h2 style="margin:0">Produse vândute pe eMAG (06–10 nov)</h2>
-    <input type="search" id="emq" placeholder="Caută produs sau model…">
+  <div id="prodps">
+    <div class="tools" style="margin-bottom:6px"><div class="upd" id="pspinfo"></div><input type="search" id="psq" placeholder="Caută produs sau model…"></div>
+    <div class="plist"><table>
+      <thead id="psth"><tr><th data-k="r" class="n">#</th><th data-k="0">Produs</th><th data-k="2" class="n">Cant.</th><th data-k="3" class="n">Total</th></tr></thead>
+      <tbody id="pspt"></tbody>
+    </table></div>
+    <div class="pmore" id="psmore"></div>
   </div>
-  <div class="upd" id="empinfo" style="margin-bottom:8px"></div>
-  <div class="scroll"><table>
-    <thead id="emth"><tr><th data-k="r" class="n">#</th><th data-k="0">Nume produs</th><th data-k="1">Model</th><th data-k="2" class="n">Cantitate</th><th data-k="3" class="n">Total</th></tr></thead>
-    <tbody id="empt"></tbody>
-  </table></div>
+  <div id="emag" style="display:none">
+    <div class="tools" style="margin-bottom:6px"><div class="upd" id="empinfo"></div><input type="search" id="emq" placeholder="Caută produs sau model…"></div>
+    <div class="plist"><table>
+      <thead id="emth"><tr><th data-k="r" class="n">#</th><th data-k="0">Produs</th><th data-k="2" class="n">Cant.</th><th data-k="3" class="n">Total</th></tr></thead>
+      <tbody id="empt"></tbody>
+    </table></div>
+    <div class="pmore" id="emmore"></div>
+  </div>
 </section>
 </div>
 <script>
@@ -176,12 +186,16 @@ function renderP(x){
   const b=B[x],D=b.D;if(!D)return;const q=$(x+'q').value.trim().toLowerCase();
   let rows=D.p.map((r,i)=>({r:i+1,d:r})).filter(o=>!q||(o.d[0]+' '+o.d[1]).toLowerCase().includes(q));
   rows.sort((a,c)=>{const p=b.k==='r'?a.r:a.d[b.k],y=b.k==='r'?c.r:c.d[b.k];return (typeof p==='string'?p.localeCompare(y,'ro'):p-y)*b.dir;});
-  $(x+'pt').innerHTML=rows.map(o=>`<tr><td class="n m">${o.r}</td><td>${esc(o.d[0])}</td><td class="m">${esc(o.d[1])}</td><td class="n">${int(o.d[2])}</td><td class="n">${lei(o.d[3])}</td></tr>`).join('')||'<tr><td colspan="5" class="m">Niciun produs găsit.</td></tr>';
+  const all=rows.length;const lim=q?all:(b.lim||10);
+  $(x+'pt').innerHTML=rows.slice(0,lim).map(o=>`<tr><td class="n m">${o.r}</td><td>${esc(o.d[0])}<div class="mdl">${esc(o.d[1])}</div></td><td class="n">${int(o.d[2])}</td><td class="n">${lei(o.d[3])}</td></tr>`).join('')||'<tr><td colspan="4" class="m">Niciun produs găsit.</td></tr>';
+  $(x+'more').innerHTML=lim<all?`<button data-a="more">Arată încă ${Math.min(20,all-lim)}</button><button data-a="all">Arată toate (${all})</button>`:(!q&&all>10?'<button data-a="less">Arată doar primele 10</button>':'');
 }
 ['ps','em'].forEach(x=>{
   document.querySelectorAll('#'+x+'th th[data-k]').forEach(th=>th.onclick=()=>{const b=B[x];const k=th.dataset.k==='r'?'r':+th.dataset.k;b.dir=(k===b.k)?-b.dir:(typeof k==='number'&&k<2?1:-1);b.k=k;renderP(x);});
   $(x+'q').oninput=()=>renderP(x);
+  $(x+'more').onclick=ev=>{const a=ev.target.dataset.a;if(!a)return;const b=B[x];b.lim=a==='more'?(b.lim||10)+20:(a==='all'?1e9:10);renderP(x);};
 });
+document.querySelectorAll('.ptabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ptabs button').forEach(z=>z.classList.toggle('on',z===b));$('prodps').style.display=b.dataset.p==='ps'?'':'none';$('emag').style.display=b.dataset.p==='em'?'':'none';});
 let LAST=null;
 const setCur=c=>{CUR=c;try{localStorage.setItem('cur',c)}catch(e){}document.querySelectorAll('.cur button').forEach(b=>b.classList.toggle('on',b.dataset.c===CUR));if(LAST)render(LAST);};
 document.querySelectorAll('.cur button').forEach(b=>b.onclick=()=>setCur(b.dataset.c));setCur(CUR);
