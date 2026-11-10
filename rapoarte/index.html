@@ -63,6 +63,7 @@ h3.sdt{font-size:15px;margin:18px 0 6px;display:flex;gap:8px;align-items:baselin
 h3.sdt small{font-weight:400;color:var(--muted);font-size:12px}
 td .pc{font-size:11px;color:var(--muted);font-weight:400}
 .vzs{cursor:pointer;font-size:17px;padding:2px 0}.vzs b{font-size:19px}#vzd[open] .vzs{margin-bottom:10px}
+tr.hx td{font-style:italic;background:var(--bg)}
 </style>
 </head>
 <body>
@@ -179,12 +180,13 @@ function renderSD(S,TO,EO){
   const days=Object.keys(S.c).map(Number).sort((a,b)=>a-b);
   $('sdn').textContent=int(S.n);$('sdu').textContent='date Sameday din '+fmtT(S.u);
   $('sdd').textContent=days.map(d=>d+' nov: '+int(sm(S.c[d]))).join(' · ');
-  const tbl=(title,C,ORD)=>{if(!C)return '';const ds=Object.keys(C).map(Number).sort((a,b)=>a-b);const dt=ds.map(d=>sm(C[d]));const N=dt.reduce((a,b)=>a+b,0);if(!N)return '';
+  const hx=(src,ds,ORD)=>{if(!src||!S.x)return '';return [['ref','Au avut refuz (istoric)','#b5179e'],['det','Au avut deteriorare (istoric)','#7b3fa0']].map(([k,lab,col])=>{const L=(S.x[k]||[]).filter(r=>r[2]===src);const v=ds.map(d=>L.filter(r=>+r[1]===d).length);const t=L.length;return `<tr class="hx"><td><span class="dot" style="background:${col}"></span>${lab} <span style="color:var(--muted);font-size:12px">· incluse și cele livrate / returnate între timp (AWB-urile sunt mai jos)</span></td>${v.map(x=>`<td class="n">${x?int(x):'–'}</td>`).join('')}<td class="n"><b>${int(t)}</b><div class="pc">${pc(t,ORD)}</div></td></tr>`}).join('')};
+  const tbl=(title,C,ORD,src)=>{if(!C)return '';const ds=Object.keys(C).map(Number).sort((a,b)=>a-b);const dt=ds.map(d=>sm(C[d]));const N=dt.reduce((a,b)=>a+b,0);if(!N)return '';
     let h=`<h3 class="sdt">${title} <small>${int(N)} AWB la ${int(ORD)} comenzi (${pc(N,ORD)})</small></h3><div class="scroll"><table><thead><tr><th>Status</th>${ds.map(d=>`<th class="n">${d} nov</th>`).join('')}<th class="n">Total<div class="pc">% din comenzi</div></th></tr></thead><tbody>`;
     CAT.forEach(([k,col,desc])=>{const v=ds.map(d=>C[d][k]||0);const tt=v.reduce((a,b)=>a+b,0);if(!tt)return;
       h+=`<tr><td><span class="dot" style="background:${col}"></span>${k} <span style="color:var(--muted);font-size:12px">· ${desc}</span></td>${v.map((x,i)=>`<td class="n">${x?int(x)+'<div class="pc">'+pc(x,dt[i])+'</div>':'–'}</td>`).join('')}<td class="n"><b>${int(tt)}</b><div class="pc">${pc(tt,ORD)}</div></td></tr>`;});
-    h+=`<tr><th>Total</th>${dt.map(x=>`<th class="n">${int(x)}</th>`).join('')}<th class="n">${int(N)}<div class="pc">${pc(N,ORD)}</div></th></tr></tbody></table></div>`;return h;};
-  $('sdtabs').innerHTML=S.ch?tbl('Livrări ParmaShop.ro',S.ch.ps,TO-EO)+tbl('Livrări eMAG',S.ch.em,EO):tbl('Toate livrările',S.c,TO);
+    h+=`<tr><th>Total</th>${dt.map(x=>`<th class="n">${int(x)}</th>`).join('')}<th class="n">${int(N)}<div class="pc">${pc(N,ORD)}</div></th></tr>`+hx(src,ds,ORD)+`</tbody></table></div>`;return h;};
+  $('sdtabs').innerHTML=S.ch?tbl('Livrări ParmaShop.ro',S.ch.ps,TO-EO,'ParmaShop')+tbl('Livrări eMAG',S.ch.em,EO,'eMAG'):tbl('Toate livrările',S.c,TO);
   renderSDX(S.x,TO,S.n);
 }
 function renderSDX(X,TO,AW){
