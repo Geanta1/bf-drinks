@@ -62,6 +62,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 h3.sdt{font-size:15px;margin:18px 0 6px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 h3.sdt small{font-weight:400;color:var(--muted);font-size:12px}
 td .pc{font-size:11px;color:var(--muted);font-weight:400}
+.vzs{cursor:pointer;font-size:17px;padding:2px 0}.vzs b{font-size:19px}#vzd[open] .vzs{margin-bottom:10px}
 </style>
 </head>
 <body>
@@ -79,8 +80,8 @@ td .pc{font-size:11px;color:var(--muted);font-weight:400}
   <div class="kpi"><div class="l">Comenzi total</div><div class="v" id="k2">–</div><div class="s" id="k4">–</div></div>
   <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="k3">–</div></div>
 </section>
-<section class="card">
-  <h2>Vânzări pe zile</h2>
+<section class="card" id="vzile">
+  <details id="vzd"><summary class="vzs"><b>Vânzări pe zile</b> <span id="vzsum" class="upd"></span></summary>
   <div class="legend"><span><i class="l26"></i>2026 (ParmaShop.ro + eMAG)</span><span><i class="l25"></i>2025, aceeași zi de campanie</span></div>
   <div class="chart" id="chart"></div>
   <div class="days" id="days"></div>
@@ -89,6 +90,7 @@ td .pc{font-size:11px;color:var(--muted);font-weight:400}
   <details><summary>Tabel pe zile</summary>
     <div class="scroll"><table><thead><tr><th>Data</th><th class="n">Comenzi ParmaShop</th><th class="n">Comenzi eMAG</th><th class="n">Vânzări ParmaShop</th><th class="n">Vânzări eMAG</th><th class="n">Total</th></tr></thead><tbody id="dayt"></tbody></table></div>
   </details>
+</details>
 </section>
 <section class="card" id="sameday" style="display:none">
   <div class="tools"><h2 style="margin:0">Sameday · AWB-uri generate din 6 nov</h2><div class="upd" id="sdu"></div></div>
@@ -162,6 +164,7 @@ function render(D){
     if(r)tb+=`<tr><td>${String(d).padStart(2,'0')}.11.2026</td><td class="n">${int(po)}</td><td class="n">${int(e[1])}</td><td class="n">${lei(pv)}</td><td class="n">${lei(e[3])}</td><td class="n">${lei(r[3])}</td></tr>`;}
   if(LY.length){let h='<span>Anul trecut (BF 7–9 nov 2025), pe zi de campanie:</span>';LY.forEach((y,i)=>{const r=byT[6+i];let c='';if(r&&y[2]&&Date.now()>Date.UTC(2026,10,5+i,22)){const p=(r[3]/y[2]-1)*100,lv=Date.now()<Date.UTC(2026,10,6+i,22);c=` <span class="${p>=0?'up':'dn'}">${p>=0?'+':''}${Math.round(p)}%${lv?' până acum':''}</span>`;}h+=`<span>Ziua ${i+1} (${y[0]}): <b>${lei(y[2])}</b> · ${int(y[1])} com.${c}</span>`;});h+=`<span>Total 2025: <b>${lei(LY.reduce((a,y)=>a+y[2],0))}</b> · ${int(LY.reduce((a,y)=>a+y[1],0))} com.</span>`;$('ly').innerHTML=h;}
   $('chart').innerHTML=ch;$('days').innerHTML=dl;$('dd').innerHTML=DD[SEL]+'<div class="hint">Atinge o zi din grafic pentru detalii.</div>';$('dayt').innerHTML=tb+`<tr><th>Total</th><th class="n">${int(pOrd)}</th><th class="n">${int(eOrd)}</th><th class="n">${lei(pTot)}</th><th class="n">${lei(eTot)}</th><th class="n">${lei(tot)}</th></tr>`;
+  $('vzsum').textContent='· '+D.s.filter(r=>r[0]<=8).map(r=>(r[0]===8?'8–9':r[0])+' nov: '+lei(r[3])).join(' · ')+' (deschide pentru grafic și tabel)';
   renderSD(D.sd,D.s.reduce((a,r)=>a+r[1],0),D.e?D.e.s.reduce((a,r)=>a+r[1],0):0);
   B.ps.D=D;B.em.D=E;
   $('pspinfo').textContent=D.po?`Primele ${D.p.length} produse după valoare, fără comenzile venite din eMAG.`:`Primele ${D.p.length} produse după valoare (include și comenzile eMAG).`;
@@ -204,6 +207,7 @@ function renderP(x){
 });
 document.querySelectorAll('.ptabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ptabs button').forEach(z=>z.classList.toggle('on',z===b));$('prodps').style.display=b.dataset.p==='ps'?'':'none';$('emag').style.display=b.dataset.p==='em'?'':'none';});
 let LAST=null;
+$('vzd').addEventListener('toggle',()=>{if($('vzd').open&&LAST)render(LAST)});
 const setCur=c=>{CUR=c;try{localStorage.setItem('cur',c)}catch(e){}document.querySelectorAll('.cur button').forEach(b=>b.classList.toggle('on',b.dataset.c===CUR));if(LAST)render(LAST);};
 document.querySelectorAll('.cur button').forEach(b=>b.onclick=()=>setCur(b.dataset.c));setCur(CUR);
 async function load(){
