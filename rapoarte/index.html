@@ -170,7 +170,7 @@ function render(D){
 }
 function renderSD(S,TO,EO){
   if(!S){$('sameday').style.display='none';return;}$('sameday').style.display='';
-  const CAT=[['De ridicat','#9aa3b5','Alocate pentru ridicare de curier'],['În tranzit','#5b8def','Ridicate, în depozite / pe drum'],['În livrare','#c9a227','La curier sau în easybox / punct de livrare'],['Livrat','#2e8540','Livrate (inclusiv ramburs transferat)'],['Anulat','#8a1c2b','Anulate'],['Retur','#e07a2b','Retur sau termen de păstrare expirat'],['Deteriorat / refuzat','#7b3fa0','Colet deteriorat sau refuzat la livrare']];
+  const CAT=[['De ridicat','#9aa3b5','Alocate pentru ridicare de curier'],['În tranzit','#5b8def','Ridicate, în depozite / pe drum'],['În livrare','#c9a227','La curier sau în easybox / punct de livrare'],['Probleme la livrare','#d9822b','Întârziere, punct aglomerat / nefuncțional, livrare nereușită'],['Livrat','#2e8540','Livrate (inclusiv ramburs transferat)'],['Refuzat','#b5179e','Refuzat la livrare sau anulat de destinatar'],['Deteriorat','#7b3fa0','Colet deteriorat'],['În curs de returnare','#e07a2b','Pe drum înapoi spre expeditor'],['Returnat','#8b4513','Returnat expeditorului'],['Anulat','#8a1c2b','Expediere anulată']];
   const sm=o=>Object.values(o||{}).reduce((a,b)=>a+b,0);
   const pc=(c,b)=>b?(c/b*100).toLocaleString('ro-RO',{minimumFractionDigits:1,maximumFractionDigits:1})+'%':'–';
   const days=Object.keys(S.c).map(Number).sort((a,b)=>a-b);
