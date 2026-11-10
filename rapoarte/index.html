@@ -59,6 +59,9 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 .pmore{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .pmore:empty{display:none}
 .pmore button{border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;cursor:pointer}
+h3.sdt{font-size:15px;margin:18px 0 6px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+h3.sdt small{font-weight:400;color:var(--muted);font-size:12px}
+td .pc{font-size:11px;color:var(--muted);font-weight:400}
 </style>
 </head>
 <body>
@@ -90,7 +93,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:10px
 <section class="card" id="sameday" style="display:none">
   <div class="tools"><h2 style="margin:0">Sameday · AWB-uri generate din 6 nov</h2><div class="upd" id="sdu"></div></div>
   <div class="sdk"><div><span class="big" id="sdn">–</span> AWB-uri, indiferent de status</div><div class="upd" id="sdd"></div></div>
-  <div class="scroll"><table><thead id="sdh"></thead><tbody id="sdt"></tbody></table></div>
+  <div id="sdtabs"></div>
 </section>
 <section class="card" id="sddet" style="display:none">
   <div class="tools"><h2 style="margin:0">Sameday · Colete deteriorate</h2><div class="upd"><b class="cnt">0</b> AWB · <b class="pct"></b></div></div>
@@ -168,13 +171,17 @@ function render(D){
 function renderSD(S,TO){
   if(!S){$('sameday').style.display='none';return;}$('sameday').style.display='';
   const CAT=[['De ridicat','#9aa3b5','Alocate pentru ridicare de curier'],['În tranzit','#5b8def','Ridicate, în depozite / pe drum'],['În livrare','#c9a227','La curier sau în easybox / punct de livrare'],['Livrat','#2e8540','Livrate'],['Anulat','#8a1c2b','Anulate'],['Retur','#e07a2b','Retur']];
+  const sm=o=>Object.values(o||{}).reduce((a,b)=>a+b,0);
+  const pc=(c,b)=>b?(c/b*100).toLocaleString('ro-RO',{minimumFractionDigits:1,maximumFractionDigits:1})+'%':'–';
   const days=Object.keys(S.c).map(Number).sort((a,b)=>a-b);
   $('sdn').textContent=int(S.n);$('sdu').textContent='date Sameday din '+fmtT(S.u);
-  $('sdd').textContent=days.map(d=>d+' nov: '+int(Object.values(S.c[d]).reduce((a,b)=>a+b,0))).join(' · ');
-  $('sdh').innerHTML='<tr><th>Status</th>'+days.map(d=>`<th class="n">${d} nov</th>`).join('')+'<th class="n">Total</th></tr>';
-  let rows='';const tot={};CAT.forEach(([k,col,desc])=>{const v=days.map(d=>S.c[d][k]||0);const t=v.reduce((a,b)=>a+b,0);if(!t)return;rows+=`<tr><td><span class="dot" style="background:${col}"></span>${k} <span class="m" style="color:var(--muted);font-size:12px">· ${desc}</span></td>${v.map(x=>`<td class="n">${x?int(x):'–'}</td>`).join('')}<td class="n"><b>${int(t)}</b></td></tr>`;});
-  rows+='<tr><th>Total</th>'+days.map(d=>`<th class="n">${int(Object.values(S.c[d]).reduce((a,b)=>a+b,0))}</th>`).join('')+`<th class="n">${int(S.n)}</th></tr>`;
-  $('sdt').innerHTML=rows;
+  $('sdd').textContent=days.map(d=>d+' nov: '+int(sm(S.c[d]))).join(' · ');
+  const tbl=(title,C)=>{if(!C)return '';const ds=Object.keys(C).map(Number).sort((a,b)=>a-b);const dt=ds.map(d=>sm(C[d]));const N=dt.reduce((a,b)=>a+b,0);if(!N)return '';
+    let h=`<h3 class="sdt">${title} <small>${int(N)} AWB · ${pc(N,S.n)} din toate AWB-urile</small></h3><div class="scroll"><table><thead><tr><th>Status</th>${ds.map(d=>`<th class="n">${d} nov</th>`).join('')}<th class="n">Total</th></tr></thead><tbody>`;
+    CAT.forEach(([k,col,desc])=>{const v=ds.map(d=>C[d][k]||0);const tt=v.reduce((a,b)=>a+b,0);if(!tt)return;
+      h+=`<tr><td><span class="dot" style="background:${col}"></span>${k} <span style="color:var(--muted);font-size:12px">· ${desc}</span></td>${v.map((x,i)=>`<td class="n">${x?int(x)+'<div class="pc">'+pc(x,dt[i])+'</div>':'–'}</td>`).join('')}<td class="n"><b>${int(tt)}</b><div class="pc">${pc(tt,N)}</div></td></tr>`;});
+    h+=`<tr><th>Total</th>${dt.map(x=>`<th class="n">${int(x)}</th>`).join('')}<th class="n">${int(N)}</th></tr></tbody></table></div>`;return h;};
+  $('sdtabs').innerHTML=S.ch?tbl('Livrări ParmaShop.ro',S.ch.ps)+tbl('Livrări eMAG',S.ch.em):tbl('Toate livrările',S.c);
   renderSDX(S.x,TO,S.n);
 }
 function renderSDX(X,TO,AW){
