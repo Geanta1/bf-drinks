@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Rapoarte ParmaShop – 06–10 noiembrie 2026</title>
+<title>Rapoarte ParmaShop – Black Friday 2026</title>
 <style>
 :root{--bg:#f6f7f9;--card:#fff;--ink:#1d2330;--muted:#6b7385;--line:#e4e7ec;--acc:#8a1c2b;--acc2:#c9a227;--bar:#8a1c2b;--barbg:#f0e6e8}
 @media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--ink:#e8ebf1;--muted:#98a1b3;--line:#2b313d;--acc:#e0566b;--acc2:#e3c15a;--bar:#e0566b;--barbg:#2a2128}}
@@ -69,13 +69,13 @@ tr.hx td{font-style:italic;background:var(--bg)}
 <body>
 <div class="wrap">
 <header>
-  <h1>Vânzări · 06–10 noiembrie 2026</h1>
+  <h1>Vânzări · <span class="rng">1–10</span> noiembrie 2026</h1>
   <div class="upd">Actualizat: <b id="upd">–</b> · se reîmprospătează automat <span class="cur"><button data-c="RON">RON</button><button data-c="EUR">EUR</button></span></div>
 </header>
 <div class="err" id="err"></div>
 <div class="upd" style="margin-bottom:4px">Sari la: <a href="#prodps" style="color:var(--acc)">Produse ParmaShop ↓</a> · <a href="#emag" style="color:var(--acc)">Produse eMAG ↓</a> · <a href="#sameday" style="color:var(--acc)">AWB Sameday ↓</a></div>
 <section class="kpis">
-  <div class="kpi"><div class="l">Vânzări total 06–10 nov</div><div class="v" id="k1">–</div><div class="s">ParmaShop.ro + eMAG</div></div>
+  <div class="kpi"><div class="l">Vânzări total <span class="rng">1–10</span> nov</div><div class="v" id="k1">–</div><div class="s">ParmaShop.ro + eMAG</div></div>
   <div class="kpi"><div class="l">ParmaShop.ro</div><div class="v" id="pk1">–</div><div class="s" id="pk2">–</div></div>
   <div class="kpi em"><div class="l">eMAG</div><div class="v" id="ek1">–</div><div class="s" id="ek2">–</div></div>
   <div class="kpi"><div class="l">Comenzi total</div><div class="v" id="k2">–</div><div class="s" id="k4">–</div></div>
@@ -110,7 +110,7 @@ tr.hx td{font-style:italic;background:var(--bg)}
 </section>
 <section class="card" id="prod">
   <div class="tools">
-    <h2 style="margin:0">Produse vândute (06–10 nov)</h2>
+    <h2 style="margin:0">Produse vândute (<span class="rng">1–10</span> nov)</h2>
     <div class="ptabs"><button data-p="ps" class="on">ParmaShop.ro</button><button data-p="em">eMAG</button></div>
   </div>
   <div id="prodps">
@@ -154,7 +154,7 @@ function render(D){
   $('ek1').textContent=lei(eTot);$('ek2').textContent=int(eOrd)+' comenzi'+(eOrd?' · medie '+lei(eTot/eOrd):'');
   const max=Math.max(1,...D.s.map(r=>r[3]),...LY.map(y=>y[2]))*1.1;let ch='',dl='',tb='';
   const cmp=v=>(v=cv(v))>=1e6?(v/1e6).toLocaleString('ro-RO',{maximumFractionDigits:2})+' mil.':Math.round(v/1000)+' mii';
-  const WD=['Dum','Lun','Mar','Mie','Joi','Vin','Sâm'];const MX=Math.max(8,...D.s.map(r=>r[0]));
+  const WD=['Dum','Lun','Mar','Mie','Joi','Vin','Sâm'];const MX=Math.max(8,...D.s.map(r=>r[0]));document.querySelectorAll('.rng').forEach(e=>e.textContent='1–'+MX);
   for(let d=6;d<=MX;d++){const r=byT[d],e=byE[d]||[d,0,0,0],y=LY[d-6];const pv=r?Math.max(0,r[3]-e[3]):0,po=r?Math.max(0,r[1]-e[1]):0;
     const bar=(cls,v,lab)=>{const h=v?Math.max(1.5,v/max*100):0;return `<div class="bw ${cls}"><div class="b" style="height:${h}%"></div><div class="v" style="bottom:calc(${h}% + 5px)">${lab}</div></div>`;};
     const wd=WD[new Date(Date.UTC(2026,10,d)).getUTCDay()],lv=Date.now()<Date.UTC(2026,10,d,22),pc=r&&y?(r[3]/y[2]-1)*100:null;
