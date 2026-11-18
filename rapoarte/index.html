@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Rapoarte ParmaShop – Black Friday 2026</title>
+<title>Rapoarte – Black Friday 2026</title>
 <style>
 :root{--bg:#f6f7f9;--card:#fff;--ink:#1d2330;--muted:#6b7385;--line:#e4e7ec;--acc:#8a1c2b;--acc2:#c9a227;--bar:#8a1c2b;--barbg:#f0e6e8}
 @media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--ink:#e8ebf1;--muted:#98a1b3;--line:#2b313d;--acc:#e0566b;--acc2:#e3c15a;--bar:#e0566b;--barbg:#2a2128}}
@@ -81,19 +81,19 @@ tr.hx td{font-style:italic;background:var(--bg)}
 <div class="err" id="err"></div>
 <div class="upd" style="margin-bottom:4px">Sari la: <a href="#vzile" style="color:var(--acc)">Pe zile ↓</a> · <a href="#prod9" style="color:var(--acc)">Produse după campanie ↓</a> · <a href="#prod" style="color:var(--acc)">Produse total ↓</a> · <a href="#sameday" style="color:var(--acc)">AWB Sameday ↓</a></div>
 <section class="kpis">
-  <div class="kpi"><div class="l">Vânzări total <span class="rng">1–10</span> nov</div><div class="v" id="k1">–</div><div class="s">ParmaShop.ro + eMAG</div></div>
-  <div class="kpi"><div class="l">ParmaShop.ro</div><div class="v" id="pk1">–</div><div class="s" id="pk2">–</div></div>
-  <div class="kpi em"><div class="l">eMAG</div><div class="v" id="ek1">–</div><div class="s" id="ek2">–</div></div>
+  <div class="kpi"><div class="l">Vânzări total <span class="rng">1–10</span> nov</div><div class="v" id="k1">–</div><div class="s">PS + EM</div></div>
+  <div class="kpi"><div class="l">PS</div><div class="v" id="pk1">–</div><div class="s" id="pk2">–</div></div>
+  <div class="kpi em"><div class="l">EM</div><div class="v" id="ek1">–</div><div class="s" id="ek2">–</div></div>
   <div class="kpi"><div class="l">Comenzi total</div><div class="v" id="k2">–</div><div class="s" id="k4">–</div></div>
   <div class="kpi"><div class="l">Produse vândute</div><div class="v" id="k3">–</div></div>
 </section>
 <section class="card" id="vzile">
   <h2>Vânzări pe zile</h2>
   <div class="blk" id="blk"></div>
-  <div class="scroll"><table class="dtab"><thead><tr><th>Ziua</th><th class="n">ParmaShop.ro<div class="pc">(<span class="cu">lei</span>)</div></th><th class="n">eMAG<div class="pc">(<span class="cu">lei</span>)</div></th><th class="n">Total<div class="pc">(<span class="cu">lei</span>)</div></th></tr></thead><tbody id="dayt"></tbody></table></div>
+  <div class="scroll"><table class="dtab"><thead><tr><th>Ziua</th><th class="n">PS<div class="pc">(<span class="cu">lei</span>)</div></th><th class="n">EM<div class="pc">(<span class="cu">lei</span>)</div></th><th class="n">Total<div class="pc">(<span class="cu">lei</span>)</div></th></tr></thead><tbody id="dayt"></tbody></table></div>
   <div class="upd" style="margin-top:6px">Sub fiecare sumă: numărul de comenzi. Comenzile din 1–5 nov sunt incluse în 6 nov.</div>
   <details id="vzd" style="margin-top:6px"><summary>Grafic campanie (6–8 nov) față de Black Friday 2025</summary>
-  <div class="legend" style="margin-top:10px"><span><i class="l26"></i>2026 (ParmaShop.ro + eMAG)</span><span><i class="l25"></i>2025, aceeași zi de campanie</span></div>
+  <div class="legend" style="margin-top:10px"><span><i class="l26"></i>2026 (PS + EM)</span><span><i class="l25"></i>2025, aceeași zi de campanie</span></div>
   <div class="chart" id="chart"></div>
   <div class="days" id="days"></div>
   <div class="dd" id="dd"></div>
@@ -118,7 +118,7 @@ tr.hx td{font-style:italic;background:var(--bg)}
 <section class="card" id="prod9">
   <div class="tools">
     <h2 style="margin:0">Produse vândute după campanie (<span id="r9">9 nov – azi</span>)</h2>
-    <div class="ptabs" data-g="9"><button data-p="ps9" class="on">ParmaShop.ro</button><button data-p="em9">eMAG</button></div>
+    <div class="ptabs" data-g="9"><button data-p="ps9" class="on">PS</button><button data-p="em9">EM</button></div>
   </div>
   <div id="ps9w">
     <div class="tools" style="margin-bottom:6px"><div class="upd" id="ps9pinfo"></div><input type="search" id="ps9q" placeholder="Caută produs sau model…"></div>
@@ -134,7 +134,7 @@ tr.hx td{font-style:italic;background:var(--bg)}
 <section class="card" id="prod">
   <div class="tools">
     <h2 style="margin:0">Produse vândute · total <span class="rng">1–10</span> nov</h2>
-    <div class="ptabs" data-g="t"><button data-p="ps" class="on">ParmaShop.ro</button><button data-p="em">eMAG</button></div>
+    <div class="ptabs" data-g="t"><button data-p="ps" class="on">PS</button><button data-p="em">EM</button></div>
   </div>
   <div id="prodps">
     <div class="tools" style="margin-bottom:6px"><div class="upd" id="pspinfo"></div><input type="search" id="psq" placeholder="Caută produs sau model…"></div>
@@ -144,7 +144,7 @@ tr.hx td{font-style:italic;background:var(--bg)}
     </table></div>
     <div class="pmore" id="psmore"></div>
   </div>
-  <div id="emag" style="display:none">
+  <div id="em" style="display:none">
     <div class="tools" style="margin-bottom:6px"><div class="upd" id="empinfo"></div><input type="search" id="emq" placeholder="Caută produs sau model…"></div>
     <div class="plist"><table>
       <thead id="emth"><tr><th data-k="r" class="n">#</th><th data-k="0">Produs</th><th data-k="2" class="n">Cant.</th><th data-k="3" class="n">Total</th></tr></thead>
@@ -181,7 +181,7 @@ function render(D){
   for(let d=6;d<=8;d++){const r=byT[d],e=byE[d]||[d,0,0,0],y=LY[d-6];const pv=r?Math.max(0,r[3]-e[3]):0,po=r?Math.max(0,r[1]-e[1]):0;
     const bar=(cls,v,lab)=>{const h=v?Math.max(1.5,v/max*100):0;return `<div class="bw ${cls}"><div class="b" style="height:${h}%"></div><div class="v" style="bottom:calc(${h}% + 5px)">${lab}</div></div>`;};
     const wd=WD[new Date(Date.UTC(2026,10,d)).getUTCDay()],lv=Date.now()<Date.UTC(2026,10,d,22),pc=r&&y?(r[3]/y[2]-1)*100:null;
-    DD[d]=`<div class="h">${d<=8?'Ziua '+(d-5):'După campanie'} · ${wd} ${d} nov 2026${r&&lv?' · în desfășurare':''}</div>`+(r?`<div class="r"><span>Total</span><span><b>${lei(r[3])}</b> · ${int(r[1])} com.</span></div><div class="r"><span>ParmaShop.ro</span><span>${lei(pv)} · ${int(po)} com.</span></div>${po?`<div class="r"><span>Medie ParmaShop</span><span>${lei(pv/po)} / comandă</span></div>`:''}<div class="r"><span>eMAG</span><span>${lei(e[3])} · ${int(e[1])} com.</span></div>`:`<div class="r"><span>Încă fără vânzări</span><span></span></div>`)+(y?`<div class="r"><span>2025 · ${y[0]}</span><span>${lei(y[2])} · ${int(y[1])} com.</span></div>`+(pc!==null?`<div class="r"><span>Față de 2025</span><span class="${pc>=0?'up':'dn'}"><b>${pc>=0?'+':''}${Math.round(pc)}%</b>${lv?' până acum':''}</span></div>`:''):'');
+    DD[d]=`<div class="h">${d<=8?'Ziua '+(d-5):'După campanie'} · ${wd} ${d} nov 2026${r&&lv?' · în desfășurare':''}</div>`+(r?`<div class="r"><span>Total</span><span><b>${lei(r[3])}</b> · ${int(r[1])} com.</span></div><div class="r"><span>PS</span><span>${lei(pv)} · ${int(po)} com.</span></div>${po?`<div class="r"><span>Medie PS</span><span>${lei(pv/po)} / comandă</span></div>`:''}<div class="r"><span>EM</span><span>${lei(e[3])} · ${int(e[1])} com.</span></div>`:`<div class="r"><span>Încă fără vânzări</span><span></span></div>`)+(y?`<div class="r"><span>2025 · ${y[0]}</span><span>${lei(y[2])} · ${int(y[1])} com.</span></div>`+(pc!==null?`<div class="r"><span>Față de 2025</span><span class="${pc>=0?'up':'dn'}"><b>${pc>=0?'+':''}${Math.round(pc)}%</b>${lv?' până acum':''}</span></div>`:''):'');
     ch+=`<div class="grp${d===SEL?' on':''}" data-d="${d}">${bar('y26',r?r[3]:0,r?cmp(r[3]):'–')}${y?bar('y25',y[2],cmp(y[2])):''}</div>`;
     dl+=`<span data-d="${d}" class="${d===SEL?'on':''}"><b>${d<=8?'Ziua '+(d-5)+' · ':''}${WD[new Date(Date.UTC(2026,10,d)).getUTCDay()]} ${d} nov</b>${y?'2025: '+y[0]:''}</span>`;}
   const cell=(v,o)=>`<td class="n">${lei(v).replace(/ (lei|€)$/,"")}<small>${int(o)} com.</small></td>`;document.querySelectorAll(".cu").forEach(e=>e.textContent=CUR==="EUR"?"€":"lei");
@@ -191,18 +191,18 @@ function render(D){
     h+=`<tr class="sub"><td>Subtotal ${lab.toLowerCase().split(' (')[0]}</td>${cell(s.pv,s.po)}${cell(s.ev,s.eo)}${cell(s.t,s.o)}</tr>`;return {h,s};};
   const post=[];for(let d=MX;d>=9;d--)post.push(d);const gA=grp('După campanie (9–'+MX+' nov)',post.reverse()),gB=grp('Campanie (6–8 nov)',[6,7,8]);
   tb=gA.h+gB.h;
-  const bk=(t,s,ds)=>s?`<div><div class="t">${t}</div><div class="v">${lei(s.t)}</div><div class="s">${int(s.o)} comenzi · medie ${lei(s.t/s.o)}<br>ParmaShop ${lei(s.pv)} · eMAG ${lei(s.ev)}${ds?'<br>medie pe zi: '+lei(s.t/ds)+' · '+int(Math.round(s.o/ds))+' com.':''}</div></div>`:'';
+  const bk=(t,s,ds)=>s?`<div><div class="t">${t}</div><div class="v">${lei(s.t)}</div><div class="s">${int(s.o)} comenzi · medie ${lei(s.t/s.o)}<br>PS ${lei(s.pv)} · EM ${lei(s.ev)}${ds?'<br>medie pe zi: '+lei(s.t/ds)+' · '+int(Math.round(s.o/ds))+' com.':''}</div></div>`:'';
   $('blk').innerHTML=bk('Campanie · 6–8 nov',gB.s,0)+bk('După campanie · 9–'+MX+' nov',gA.s,gA.s?post.filter(d=>byT[d]).length:0);
   if(LY.length){let h='<span>Anul trecut (BF 7–9 nov 2025), pe zi de campanie:</span>';LY.forEach((y,i)=>{const r=byT[6+i];let c='';if(r&&y[2]&&Date.now()>Date.UTC(2026,10,5+i,22)){const p=(r[3]/y[2]-1)*100,lv=Date.now()<Date.UTC(2026,10,6+i,22);c=` <span class="${p>=0?'up':'dn'}">${p>=0?'+':''}${Math.round(p)}%${lv?' până acum':''}</span>`;}h+=`<span>Ziua ${i+1} (${y[0]}): <b>${lei(y[2])}</b> · ${int(y[1])} com.${c}</span>`;});h+=`<span>Total 2025: <b>${lei(LY.reduce((a,y)=>a+y[2],0))}</b> · ${int(LY.reduce((a,y)=>a+y[1],0))} com.</span>`;$('ly').innerHTML=h;}
   $('chart').innerHTML=ch;$('days').innerHTML=dl;$('dd').innerHTML=DD[SEL]+'<div class="hint">Atinge o zi din grafic pentru detalii.</div>';$('dayt').innerHTML=tb+`<tr class="tot"><td>Total 1–${MX} nov</td>${cell(pTot,pOrd)}${cell(eTot,eOrd)}${cell(tot,ord)}</tr>`;
   renderSD(D.sd,D.s.reduce((a,r)=>a+r[1],0),D.e?D.e.s.reduce((a,r)=>a+r[1],0):0);
   B.ps.D=D;B.em.D=E;
-  $('pspinfo').textContent=D.po?`Primele ${D.p.length} produse după valoare, fără comenzile venite din eMAG.`:`Primele ${D.p.length} produse după valoare (include și comenzile eMAG).`;
-  $('empinfo').textContent=`Primele ${E.p.length} produse după valoare, din ${E.n} produse vândute pe eMAG în perioadă`+(D.e?` · date eMAG din ${fmtT(D.e.u)}`:'')+'.';
+  $('pspinfo').textContent=D.po?`Primele ${D.p.length} produse după valoare, fără comenzile venite din EM.`:`Primele ${D.p.length} produse după valoare (include și comenzile EM).`;
+  $('empinfo').textContent=`Primele ${E.p.length} produse după valoare, din ${E.n} produse vândute pe EM în perioadă`+(D.e?` · date EM din ${fmtT(D.e.u)}`:'')+'.';
   renderP('ps');renderP('em');
   const P9=D.p9||{ps:[],em:[]};B.ps9.D={p:P9.ps||[]};B.em9.D={p:P9.em||[]};$('r9').textContent='9–'+MX+' nov';
   const sq=a=>a.reduce((s,r)=>[s[0]+r[2],s[1]+r[3]],[0,0]);const a9=sq(P9.ps||[]),b9=sq(P9.em||[]);
-  $('ps9pinfo').textContent=`${int((P9.ps||[]).length)} produse · ${int(a9[0])} buc. · ${lei(a9[1])} (fără comenzile eMAG)`;
+  $('ps9pinfo').textContent=`${int((P9.ps||[]).length)} produse · ${int(a9[0])} buc. · ${lei(a9[1])} (fără comenzile EM)`;
   $('em9pinfo').textContent=`${int((P9.em||[]).length)} produse · ${int(b9[0])} buc. · ${lei(b9[1])}`;
   renderP('ps9');renderP('em9');
 }
@@ -220,7 +220,7 @@ function renderSD(S,TO,EO){
     CAT.forEach(([k,col,desc])=>{const v=ds.map(d=>C[d][k]||0);const tt=v.reduce((a,b)=>a+b,0);if(!tt)return;
       h+=`<tr><td><span class="dot" style="background:${col}"></span>${k} <span style="color:var(--muted);font-size:12px">· ${desc}</span></td>${v.map((x,i)=>`<td class="n">${x?int(x)+'<div class="pc">'+pc(x,dt[i])+'</div>':'–'}</td>`).join('')}<td class="n"><b>${int(tt)}</b><div class="pc">${pc(tt,ORD)}</div></td></tr>`;});
     h+=`<tr><th>Total</th>${dt.map(x=>`<th class="n">${int(x)}</th>`).join('')}<th class="n">${int(N)}<div class="pc">${pc(N,ORD)}</div></th></tr>`+hx(src,ds,ORD)+`</tbody></table></div>`;return h;};
-  $('sdtabs').innerHTML=S.ch?tbl('Livrări ParmaShop.ro',S.ch.ps,TO-EO,'ParmaShop')+tbl('Livrări eMAG',S.ch.em,EO,'eMAG'):tbl('Toate livrările',S.c,TO);
+  $('sdtabs').innerHTML=S.ch?tbl('Livrări PS',S.ch.ps,TO-EO,'PS')+tbl('Livrări EM',S.ch.em,EO,'EM'):tbl('Toate livrările',S.c,TO);
   renderSDX(S.x,TO,S.n);
 }
 function renderSDX(X,TO,AW){
@@ -241,7 +241,7 @@ function renderP(x){
   $(x+'q').oninput=()=>renderP(x);
   $(x+'more').onclick=ev=>{const a=ev.target.dataset.a;if(!a)return;const b=B[x];b.lim=a==='more'?(b.lim||10)+20:(a==='all'?1e9:10);renderP(x);};
 });
-document.querySelectorAll('.ptabs button').forEach(b=>b.onclick=()=>{const g=b.parentNode;g.querySelectorAll('button').forEach(z=>z.classList.toggle('on',z===b));if(g.dataset.g==='9'){$('ps9w').style.display=b.dataset.p==='ps9'?'':'none';$('em9w').style.display=b.dataset.p==='em9'?'':'none';}else{$('prodps').style.display=b.dataset.p==='ps'?'':'none';$('emag').style.display=b.dataset.p==='em'?'':'none';}});
+document.querySelectorAll('.ptabs button').forEach(b=>b.onclick=()=>{const g=b.parentNode;g.querySelectorAll('button').forEach(z=>z.classList.toggle('on',z===b));if(g.dataset.g==='9'){$('ps9w').style.display=b.dataset.p==='ps9'?'':'none';$('em9w').style.display=b.dataset.p==='em9'?'':'none';}else{$('prodps').style.display=b.dataset.p==='ps'?'':'none';$('em').style.display=b.dataset.p==='em'?'':'none';}});
 let LAST=null;
 $('vzd').addEventListener('toggle',()=>{if($('vzd').open&&LAST)render(LAST)});
 const setCur=c=>{CUR=c;try{localStorage.setItem('cur',c)}catch(e){}document.querySelectorAll('.cur button').forEach(b=>b.classList.toggle('on',b.dataset.c===CUR));if(LAST)render(LAST);};
