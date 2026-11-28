@@ -25,6 +25,11 @@ h1{font-weight:800;font-size:clamp(32px,5vw,46px);line-height:1.05;letter-spacin
 .big{text-align:right}
 .big b{display:block;font-weight:800;font-size:clamp(40px,6vw,60px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .big span{color:var(--mu);font-size:14px}
+.split{display:flex;gap:10px;flex-wrap:wrap;margin:-8px 0 22px}
+.pill{display:flex;align-items:baseline;gap:8px;background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:8px 14px}
+.pill b{font-weight:800;font-size:24px;font-variant-numeric:tabular-nums}
+.pill span{color:var(--mu);font-size:14px}
+.pill.al{border-left:5px solid var(--cla)}.pill.na{border-left:5px solid var(--teal)}
 .bars{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content;gap:6px 12px;align-items:center;margin-bottom:28px}
 .bars a{color:var(--ink);text-decoration:none;font-size:15px;white-space:nowrap}
 .bars a:hover{text-decoration:underline}
@@ -51,6 +56,7 @@ li small{display:block;color:var(--mu);font-size:13px}
 <div><h1>Băuturi pe categorii</h1><p class="lead"><span id="np"></span> produse în <span id="nc"></span> categorii</p></div>
 <div class="big"><b id="tot"></b><span>bucăți în total</span></div>
 </div>
+<div class="split"><div class="pill al"><b id="al"></b><span>buc. cu alcool</span></div><div class="pill na"><b id="na"></b><span>buc. fără alcool</span><span id="nad"></span></div></div>
 <div class="bars" id="bars"></div>
 <div class="grid" id="grid"></div>
 <p class="foot">Fără cafea, sosuri, ulei și scutece. Lista din 28.11.2026.</p>
@@ -62,6 +68,11 @@ const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const sum=d=>d.it.reduce((a,x)=>a+x.q,0);
 const T=D.reduce((a,d)=>a+sum(d),0),M=Math.max(...D.map(sum));
 document.getElementById('tot').textContent=T;
+const NA=['Apă tonică','Fără alcool','Sirop'];
+const na=D.filter(d=>NA.includes(d.c)).reduce((a,d)=>a+sum(d),0);
+document.getElementById('al').textContent=T-na;
+document.getElementById('na').textContent=na;
+document.getElementById('nad').textContent='(apă tonică, siropuri, vin fără alcool)';
 document.getElementById('np').textContent=D.reduce((a,d)=>a+d.it.length,0);
 document.getElementById('nc').textContent=D.length;
 document.getElementById('bars').innerHTML=D.map((d,i)=>'<a href="#'+d.id+'">'+esc(d.c)+'</a><div class="bar'+(i===0?' top1':'')+'" style="width:'+(sum(d)/M*100).toFixed(1)+'%"></div><div class="num">'+sum(d)+'</div>').join('');
