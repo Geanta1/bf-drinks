@@ -68,11 +68,11 @@ const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const sum=d=>d.it.reduce((a,x)=>a+x.q,0);
 const T=D.reduce((a,d)=>a+sum(d),0),M=Math.max(...D.map(sum));
 document.getElementById('tot').textContent=T;
-const NA=['Apă tonică','Fără alcool','Sirop'];
+const NA=['Apă tonică','Fără alcool','Sirop','Cocktail RTD'];
 const na=D.filter(d=>NA.includes(d.c)).reduce((a,d)=>a+sum(d),0);
 document.getElementById('al').textContent=T-na;
 document.getElementById('na').textContent=na;
-document.getElementById('nad').textContent='(apă tonică, siropuri, vin fără alcool)';
+document.getElementById('nad').textContent='(doze cocktail, apă tonică, siropuri, vin fără alcool)';
 document.getElementById('np').textContent=D.reduce((a,d)=>a+d.it.length,0);
 document.getElementById('nc').textContent=D.length;
 document.getElementById('bars').innerHTML=D.map((d,i)=>'<a href="#'+d.id+'">'+esc(d.c)+'</a><div class="bar'+(i===0?' top1':'')+'" style="width:'+(sum(d)/M*100).toFixed(1)+'%"></div><div class="num">'+sum(d)+'</div>').join('');
