@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Băuturi pe categorii</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE work
+   IDEA a newspaper graphics-desk inventory sheet
+   PICTURE horizontal bars of pieces per category, each bar linking to its list
+   COLOUR pale pink ground, ink, teal bars, claret accent on the largest
+   TYPE Libre Franklin 800 + Libre Franklin
+   LAYOUT title + total top, bar chart full width, then category cards in two columns (one on phone) */
+:root{color-scheme:light dark;--bg:light-dark(#ffe3dc,#1c1512);--card:light-dark(#fff4f0,#261d19);--ink:light-dark(#1a1817,#f3ebe7);--mu:light-dark(#6a5a55,#b8a9a3);--ln:light-dark(#efc9bf,#3a2d28);--teal:light-dark(#0d7680,#4fb3bc);--cla:light-dark(#990f3d,#e0507f)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Libre Franklin",system-ui,sans-serif;overflow-x:clip}
+.band{max-width:1100px;margin:0 auto;padding-block:clamp(24px,4vw,48px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:20px}
+h1{font-weight:800;font-size:clamp(32px,5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:0}
+.lead{margin:6px 0 0;color:var(--mu);font-size:16px}
+.big{text-align:right}
+.big b{display:block;font-weight:800;font-size:clamp(40px,6vw,60px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.big span{color:var(--mu);font-size:14px}
+.bars{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content;gap:6px 12px;align-items:center;margin-bottom:28px}
+.bars a{color:var(--ink);text-decoration:none;font-size:15px;white-space:nowrap}
+.bars a:hover{text-decoration:underline}
+.bar{height:18px;background:var(--teal);border-radius:2px}
+.bar.top1{background:var(--cla)}
+.num{font-weight:800;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.cat{background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:14px 16px;scroll-margin-top:12px}
+.cat h2{display:flex;justify-content:space-between;gap:12px;font-size:19px;font-weight:800;margin:0 0 8px;letter-spacing:-.01em;border-bottom:1px solid var(--ln);padding-bottom:6px}
+.cat h2 span{color:var(--teal);font-variant-numeric:tabular-nums;white-space:nowrap}
+ul{list-style:none;margin:0;padding:0}
+li{display:grid;grid-template-columns:3.2em minmax(0,1fr);gap:8px;padding:5px 0;border-bottom:1px dashed var(--ln);font-size:15px}
+li:last-child{border-bottom:0}
+li b{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+li small{display:block;color:var(--mu);font-size:13px}
+.foot{color:var(--mu);font-size:13px;margin-top:18px}
+@media(max-width:700px){.grid{grid-template-columns:minmax(0,1fr)}.bars a{font-size:14px}}
+@media(max-width:420px){.big{text-align:left}}
+</style>
+</head>
+<body>
+<div class="band">
+<div class="top">
+<div><h1>Băuturi pe categorii</h1><p class="lead"><span id="np"></span> produse în <span id="nc"></span> categorii</p></div>
+<div class="big"><b id="tot"></b><span>bucăți în total</span></div>
+</div>
+<div class="bars" id="bars"></div>
+<div class="grid" id="grid"></div>
+<p class="foot">Fără cafea, sosuri, ulei și scutece. Lista din 28.11.2026.</p>
+</div>
+<script>
+{
+const D=[{"c": "Cocktail RTD", "id": "c0", "it": [{"n": "Cocktail Mojito All Shook Up 0.25l", "q": 12, "cod": "ART_38278"}, {"n": "Cocktail Passion Fruit Martini All Shook Up 0.25l", "q": 12, "cod": "ART_36252"}, {"n": "Cocktail Pina Colada All Shook Up 0.25l", "q": 12, "cod": "ART_36250"}, {"n": "Cocktail Strawberry Daiquiri All Shook Up 0.25l", "q": 12, "cod": "ART_36251"}]}, {"c": "Apă tonică", "id": "c1", "it": [{"n": "Apa Tonica Pink Grapefruit 3 Cents 0.2L", "q": 24, "cod": "ART_37637"}, {"n": "Apa Tonica Pickle 3 Cents 0.2L", "q": 12, "cod": "ART_38187"}]}, {"c": "Spumante & șampanie", "id": "c2", "it": [{"n": "Prosecco Extra Dry Serenello DOC 0.75L", "q": 12, "cod": "ART_36947"}, {"n": "Sampanie Brut Non Vintage Caviste Piper Heidsieck 0.75l", "q": 2, "cod": "ART_36039"}, {"n": "Sampanie Brut Origine Champagne Collet 0.75L", "q": 2, "cod": "ART_38832"}, {"n": "Vin Frizzante Malvasia Terre Verdiane Ceci 1813 0.75l", "q": 2, "cod": "ART_35289"}, {"n": "Vin Spumant Alb Brut Malvasia Otello Ceci 1813 0.75l", "q": 2, "cod": "ART_35294"}, {"n": "Vin Spumant Brut Ferrari DOC 0.75l", "q": 2, "cod": "ART_35363"}, {"n": "Vin Spumant Lambrusco Rosu Demi-Sec Otellon'Ice 0.75l", "q": 2, "cod": "ART_35290"}]}, {"c": "Vin roșu", "id": "c3", "it": [{"n": "Vin Rosu Primitivo Di Manduria DOC Riserva Uno Antonini 0.75", "q": 12, "cod": "ART_35453"}, {"n": "Vin Rosu Sessantanni Primitivo Di Manduria San Marzano DOP 0.75l", "q": 3, "cod": "ART_33668"}, {"n": "Vin Rosu CastelGiocondo Brunello Di Montalcino Frescobaldi DOCG 0.75l", "q": 1, "cod": "ART_36392"}, {"n": "Vin Rosu Lucente 2023 Tenuta Luce 0.75l", "q": 1, "cod": "ART_36406"}]}, {"c": "Vin alb", "id": "c4", "it": [{"n": "Vin Alb Uno Pecorino Abruzzo DOC Antonini 0.75l", "q": 12, "cod": "ART_35458"}]}, {"c": "Aperitiv & digestiv", "id": "c5", "it": [{"n": "Bitter Beluga Hunting Herbal 40% alc. 0.5l", "q": 1, "cod": "ART_35878"}, {"n": "Bitter Del Professore 25% alc. 0.7l", "q": 1, "cod": "ART_36184"}, {"n": "Branca Menta 28% Alc. 0.5L", "q": 1, "cod": "ART_33560"}, {"n": "Elixir Di Caffe Santa Maria Al Monte Caffo 30% Alc. 0.7l", "q": 1, "cod": "ART_37167"}, {"n": "Rosso Liguria Santa Maria Al Monte Caffo 15% Alc. 1l", "q": 1, "cod": "ART_37168"}, {"n": "Vecchio Amaro Del Capo Caffo 35% alc. 0.7l", "q": 1, "cod": "ART_33561"}, {"n": "Vecchio Amaro Del Capo Red Hot Edition 35% Alc. 0.7l", "q": 1, "cod": "ART_37172"}]}, {"c": "Gin & tequila", "id": "c6", "it": [{"n": "Gin Cu Cirese Negre Whitley Neill 41.3% Alc. 0.7L", "q": 1, "cod": "ART_36471"}, {"n": "Gin Fine De Claire Adriatic Oyster 42.5% Alc. 0.7l", "q": 1, "cod": "ART_35675"}, {"n": "Gin Fine De Claire Wild Citrus Adriatic Oyster 42.5% Alc. 0.7l", "q": 1, "cod": "ART_35674"}, {"n": "Gin Mare Capri 42.7% Alc. 0.7L", "q": 1, "cod": "ART_38430"}, {"n": "Mezcal Espadin Lokita 8YO 40% Alc. 0.7l", "q": 1, "cod": "ART_35499"}, {"n": "Tequila Anejo Cazcabel 40% Alc. 0.7l", "q": 1, "cod": "ART_35817"}, {"n": "Tequila Silver Patron 0.7L", "q": 1, "cod": "ART_38161"}]}, {"c": "Lichior", "id": "c7", "it": [{"n": "Amaretto Sinfonia 25% Alc. 0.7l", "q": 1, "cod": "ART_35830"}, {"n": "Caffe Borghetti 25% Alc. 1l", "q": 1, "cod": "ART_35693"}, {"n": "Clementino Della Piana Caffo 30% Alc. 0.7l", "q": 1, "cod": "ART_37166"}, {"n": "Lichior De Ananas Carribean Giffard 20% alc. 0.7l", "q": 1, "cod": "ART_36449"}, {"n": "Limoncino Portofino Caffo 30% alc. 0.7l", "q": 1, "cod": "ART_37171"}, {"n": "Plum Wine Fuki 9% Alc. 0.75l", "q": 1, "cod": "ART_35502"}]}, {"c": "Sirop", "id": "c8", "it": [{"n": "Sirop Cookie Cu Ciocolata Mixer 1l", "q": 1, "cod": "ART_37886"}, {"n": "Sirop De Banana Marie Brizard 0.7l", "q": 1, "cod": "ART_36069"}, {"n": "Sirop De Lavanda Mixer 1l", "q": 1, "cod": "ART_37839"}, {"n": "Sirop Grenadine Mixer 1l", "q": 1, "cod": "ART_37891"}, {"n": "Sirop de Caramel Sarat Marie Brizard 0.7L", "q": 1, "cod": "ART_36080"}, {"n": "Topping Caramel Mixer 1,4kg", "q": 1, "cod": "ART_37880"}]}, {"c": "Rom", "id": "c9", "it": [{"n": "Rom Cu Lamaie & Plante Aromatice Spirited Union 38% Alc. 0.7l", "q": 1, "cod": "ART_38741"}, {"n": "Rom Cu Portocale & Ginger Spirited Union Alc.38% 0.7l", "q": 1, "cod": "ART_38743"}, {"n": "Rom Spiced Ratu Alc. 40% 0.7l", "q": 1, "cod": "ART_38738"}, {"n": "Rom Tesoro Reserve Overproof Tanduay 50.5% Alc 0.7L", "q": 1, "cod": "ART_38260"}, {"n": "Rom Yellow Snake Jamaica Island Signature 40% Alc. 0.7l", "q": 1, "cod": "ART_35587"}]}, {"c": "Fără alcool", "id": "c10", "it": [{"n": "Vin Alb Fara Alcool Natureo Muscat Miguel Torres 0.75l", "q": 2, "cod": "ART_36148"}, {"n": "Vin Spumant Dezalcoolizat Serena 1881 0.75l", "q": 2, "cod": "ART_34298"}]}, {"c": "Vodka", "id": "c11", "it": [{"n": "Beluga Transatlantic Vodka 40% Alc. 0.7l + Ochelari Soare", "q": 1, "cod": "ART_35688"}, {"n": "Vodka Absolut Tabasco 38% Alc. 0.7L", "q": 1, "cod": "ART_37628"}, {"n": "Vodka Beluga Noble Winter Edition 40% Alc. 0.7l", "q": 1, "cod": "ART_35667"}]}, {"c": "Whisky", "id": "c12", "it": [{"n": "Whiskey Single Malt Aber Falls 40% Alc. 0.7L", "q": 2, "cod": "ART_36487"}, {"n": "Whisky Single Malt Johnny Cree 40% Alc. 0.7l", "q": 1, "cod": "ART_36509"}]}, {"c": "Vermut", "id": "c13", "it": [{"n": "Vermouth di Torino Rosso Del Professore 18% Alc.", "q": 1, "cod": "ART_38376"}, {"n": "Vermut Rosu Punt E Mes 16% Alc. 1l", "q": 1, "cod": "ART_35699"}]}];
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sum=d=>d.it.reduce((a,x)=>a+x.q,0);
+const T=D.reduce((a,d)=>a+sum(d),0),M=Math.max(...D.map(sum));
+document.getElementById('tot').textContent=T;
+document.getElementById('np').textContent=D.reduce((a,d)=>a+d.it.length,0);
+document.getElementById('nc').textContent=D.length;
+document.getElementById('bars').innerHTML=D.map((d,i)=>'<a href="#'+d.id+'">'+esc(d.c)+'</a><div class="bar'+(i===0?' top1':'')+'" style="width:'+(sum(d)/M*100).toFixed(1)+'%"></div><div class="num">'+sum(d)+'</div>').join('');
+document.getElementById('grid').innerHTML=D.map(d=>'<section class="cat" id="'+d.id+'"><h2>'+esc(d.c)+'<span>'+sum(d)+' buc</span></h2><ul>'+d.it.map(x=>'<li><b>'+x.q+' ×</b><div>'+esc(x.n)+'<small>'+esc(x.cod)+'</small></div></li>').join('')+'</ul></section>').join('');
+}
+</script>
+</body>
+</html>
